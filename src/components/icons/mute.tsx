@@ -2,10 +2,10 @@ import React from 'react';
 import Svg, { Path } from 'react-native-svg';
 import { SvgIconProps } from './type';
 
-export const MuteIcon: React.FC<SvgIconProps> = ({ color = '#fff' }) => {
+export const MuteIcon: React.FC<SvgIconProps> = ({ color = '#fff', iconSize = 20 }) => {
   return (
-    <Svg width={20} height={20} viewBox="0 0 256 256" fill={color}>
-       <Path
+    <Svg width={iconSize} height={iconSize} viewBox="0 0 256 256" fill={color}>
+      <Path
         d="M168 64v64a40 40 0 01-40 40 40 40 0 01-40-40V64a40 40 0 0140-40 40 40 0 0140 40z"
         opacity={0.2}
       />
