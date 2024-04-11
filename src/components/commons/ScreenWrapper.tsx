@@ -9,6 +9,7 @@ export const ScreenWrapper = ({
   bg,
   padding = SCREEN_PADDING,
   noEdges = false,
+  style,
 }: ScreenWrapperProps) => {
   const { colors } = useTheme();
   bg = bg ? bg : colors.PRIMARY;
@@ -19,7 +20,7 @@ export const ScreenWrapper = ({
 
   return (
     <SafeAreaView
-      style={{ backgroundColor: bg, paddingHorizontal: padding, flex: 1 }}
+      style={[{ backgroundColor: bg, paddingHorizontal: padding, flex: 1 }, style]}
       edges={edges}
     >
       {children}

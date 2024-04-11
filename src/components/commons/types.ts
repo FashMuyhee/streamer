@@ -21,6 +21,7 @@ export interface ScreenWrapperProps {
   padding?: number;
   padded?: boolean;
   noEdges?: boolean;
+  style?: StyleProp<ViewStyle>;
 }
 
 // BUTTON COMPONENT
