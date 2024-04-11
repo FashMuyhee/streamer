@@ -20,6 +20,7 @@ export interface ScreenWrapperProps {
   children: React.ReactNode;
   padding?: number;
   padded?: boolean;
+  noEdges?: boolean;
 }
 
 // BUTTON COMPONENT

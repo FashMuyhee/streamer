@@ -1,14 +1,17 @@
-import {Pressable} from 'react-native';
+import { Pressable } from 'react-native';
 import React from 'react';
-import {useNavigation} from '@react-navigation/native';
-import {ArrowLeftIcon} from '@components';
+import { useNavigation } from '@react-navigation/native';
+import { ArrowLeftIcon } from '@components';
+import { useTheme } from '@hooks';
 
 type Props = {
   onPress?: () => void;
 };
 
-export const BackArrow = ({onPress}: Props) => {
+export const BackArrow = ({ onPress }: Props) => {
   const navigation = useNavigation();
+  const { colors } = useTheme();
+
   return (
     <Pressable
       onPress={() => {
@@ -17,8 +20,9 @@ export const BackArrow = ({onPress}: Props) => {
           return;
         }
         navigation.goBack();
-      }}>
-      <ArrowLeftIcon />
+      }}
+    >
+      <ArrowLeftIcon color={colors.TEXT} />
     </Pressable>
   );
 };

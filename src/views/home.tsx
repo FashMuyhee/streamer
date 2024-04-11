@@ -1,16 +1,16 @@
-import {View, Text} from 'react-native';
 import React from 'react';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {ScreenParams} from '@routes/type';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { ScreenParams } from '@routes/type';
+import { ScreenWrapper, Text } from '@components';
 
 type Props = {
   navigation: NativeStackNavigationProp<ScreenParams>;
 };
 
-export const HomeScreen = ({navigation}: Props) => {
+export const HomeScreen = ({ navigation }: Props) => {
   return (
-    <View>
+    <ScreenWrapper noEdges>
       <Text>home</Text>
-    </View>
+    </ScreenWrapper>
   );
 };
