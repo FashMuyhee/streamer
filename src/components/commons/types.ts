@@ -1,4 +1,4 @@
-import { StyleProp, TextStyle } from 'react-native';
+import { GestureResponderEvent, StyleProp, TextStyle, ViewStyle } from 'react-native';
 
 // TEXT COMPONENTS TYPES
 export interface TextProps {
@@ -20,4 +20,17 @@ export interface ScreenWrapperProps {
   children: React.ReactNode;
   padding?: number;
   padded?: boolean;
+}
+
+// BUTTON COMPONENT
+export interface ButtonProps {
+  title: string;
+  onPress?: (event: GestureResponderEvent) => void;
+  textColor?: string;
+  style?: StyleProp<ViewStyle>;
+  disabled?: boolean;
+  isLoading?: boolean;
+  bg?: string;
+  fontSize?: number;
+  height?: number;
 }
