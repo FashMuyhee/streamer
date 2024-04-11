@@ -29,6 +29,7 @@ const CustomToast = ({ type, ...props }: ToastProp) => {
         height: IS_ANDROID ? 55 : STATUSBAR_HEIGHT + 35,
         borderRadius: 0,
         borderLeftWidth: 0,
+        marginBottom: IS_ANDROID ? -10 : undefined,
       }}
       text1Style={{
         fontSize: 15,
