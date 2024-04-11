@@ -5,7 +5,7 @@ import { UserProps } from './types';
 import { Text } from './Text';
 import { CenterView } from './Flex';
 
-const SMALL = 40;
+const SMALL = 30;
 const NORMAL = 60;
 
 const Wrapper = ({ size = 'small', user, ...props }: UserProps) => {
