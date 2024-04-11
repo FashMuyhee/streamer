@@ -3,6 +3,8 @@ import React from 'react';
 import { CloudIcon, MuteIcon, StopIcon, Text, UnmuteIcon } from '@components';
 import { COLORS } from '@utils';
 import { useConfirmationAlert, useTheme } from '@hooks';
+import { useCall, useCallStateHooks } from '@stream-io/video-react-native-sdk';
+import { useNavigation } from '@react-navigation/native';
 
 type Props = {
   isHost: boolean;
@@ -10,15 +12,39 @@ type Props = {
 
 export const Actions = ({ isHost }: Props) => {
   const { colors } = useTheme();
-  const [isMute, setIsMute] = React.useState(false);
-  const [isLive, setIsLive] = React.useState(false);
+
+  const navigation = useNavigation();
 
   const stopAlert = useConfirmationAlert();
   const leaveAlert = useConfirmationAlert();
   const endLiveAlert = useConfirmationAlert();
 
+  const call = useCall();
+
+  const { useMicrophoneState, useIsCallLive } = useCallStateHooks();
+  const isLive = useIsCallLive();
+  const { isMute } = useMicrophoneState();
+
   const onToggleMute = () => {
-    setIsMute(!isMute);
+    call?.microphone.toggle();
+  };
+
+  const goLive = async () => {
+    try {
+      await call?.goLive();
+    } catch (error) {
+      console.log(error);
+      // err message
+    }
+  };
+
+  const stopLive = async () => {
+    try {
+      await call?.stopLive();
+    } catch (error) {
+      console.log(error);
+      // err message
+    }
   };
 
   const onToggleLive = () => {
@@ -27,8 +53,10 @@ export const Actions = ({ isHost }: Props) => {
       message: isLive
         ? 'Are you sure you want to stop the stream ?'
         : 'Do you want to resume this stream ?',
-      onProceed: () => setIsLive(!isLive),
-      proceedText: isLive ? 'Stop' : 'Resume',
+      onProceed: async () => {
+        isLive ? stopLive() : goLive();
+      },
+      proceedText: isLive ? 'Stop' : 'Go Live',
       closeText: 'Cancel',
     });
   };
@@ -37,31 +65,39 @@ export const Actions = ({ isHost }: Props) => {
     leaveAlert.onShow({
       title: 'Leave Room',
       message: 'Are you sure you want to leave the room?',
-      onProceed: () => {},
+      onProceed: async () => {
+        try {
+          await call?.leave();
+          navigation.goBack();
+        } catch (error) {
+          // err message
+        }
+      },
       proceedText: 'Leave',
       closeText: 'Cancel',
     });
-
-    setIsLive(false);
-    setIsMute(false);
   };
 
   const onEndLive = () => {
     endLiveAlert.onShow({
       title: 'End Live',
       message: 'Are you sure you want to end the live?',
-      onProceed: () => {},
+      onProceed: async () => {
+        try {
+          await call?.endCall();
+          navigation.goBack();
+        } catch (error) {
+          // err message
+        }
+      },
       proceedText: 'End Stream',
       closeText: 'Cancel',
     });
-
-    setIsLive(false);
-    setIsMute(false);
   };
 
   const onEndCall = () => {
     if (isHost) {
-      onEndCall();
+      onEndLive();
     } else {
       onLeaveRoom();
     }
