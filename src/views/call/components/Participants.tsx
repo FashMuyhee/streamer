@@ -20,11 +20,11 @@ export const Participants = (props: Props) => {
     <View style={[styles.container, { backgroundColor: colors.SECONDARY }]}>
       <Text isBold>Participants</Text>
       {/* users */}
-      <View style={styles.participantList}>
+      <StackView justify="flex-start" align="center" style={styles.participantList}>
         {participants.map((participant, index) => (
           <Participant key={index} participant={participant} />
         ))}
-      </View>
+      </StackView>
     </View>
   );
 };
@@ -61,9 +61,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   participantList: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    alignContent: 'flex-start',
     marginTop: 5,
     columnGap: 10,
   },
