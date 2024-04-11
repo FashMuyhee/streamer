@@ -77,9 +77,6 @@ export const PermissionRequests = ({ isOpen, onClose }: Props) => {
     }
   };
 
-  if (!canUpdatePermissions || !speakingRequests.length) {
-    return null;
-  }
   return (
     <Modal
       visible={isOpen}

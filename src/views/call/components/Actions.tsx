@@ -2,7 +2,6 @@ import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import {
   CloudIcon,
-  EarphoneIcon,
   MuteIcon,
   SpeakerIcon,
   StackView,
@@ -12,13 +11,14 @@ import {
 } from '@components';
 import { COLORS } from '@utils';
 import { useConfirmationAlert, useTheme } from '@hooks';
-import { useCall, useCallStateHooks } from '@stream-io/video-react-native-sdk';
+import { OwnCapability, useCall, useCallStateHooks } from '@stream-io/video-react-native-sdk';
 import { useNavigation } from '@react-navigation/native';
 import { useToggleMic } from '../hooks';
 import Toast from 'react-native-toast-message';
 import { IconButton } from '@components/commons/IconButton';
 //@ts-ignore
 import InCallManager from 'react-native-incall-manager';
+import { useSpeakRequest } from '../hooks/useSpeakRequests';
 
 type Props = {
   isHost: boolean;
@@ -27,24 +27,28 @@ type Props = {
 
 export const Actions = ({ isHost, openRequests }: Props) => {
   const { colors } = useTheme();
-
   const navigation = useNavigation();
-
   const stopAlert = useConfirmationAlert();
   const leaveAlert = useConfirmationAlert();
   const endLiveAlert = useConfirmationAlert();
 
+  // STREAM HOOKS AND STATES
   const call = useCall();
-
-  const { useIsCallLive } = useCallStateHooks();
+  const { useIsCallLive, useHasPermissions } = useCallStateHooks();
   const isLive = useIsCallLive();
   const { isMute, toggleMic, disabled } = useToggleMic();
   const [isSpeaker, setIsSpeaker] = React.useState(false);
+  const canUpdatePermissions = useHasPermissions(OwnCapability.UPDATE_CALL_PERMISSIONS);
+  const { speakingRequests } = useSpeakRequest();
+  const canAcceptRequest = React.useMemo(() => {
+    return canUpdatePermissions && speakingRequests.length > 0;
+  }, [speakingRequests, canUpdatePermissions]);
+  
 
-  // Called on call join
+  // FUNCTIONS AND ACTIONS
   const toggleSpeakerPhone = () => {
     InCallManager.setSpeakerphoneOn(!isSpeaker);
-    setIsSpeaker(isSpeaker);
+    setIsSpeaker(!isSpeaker);
   };
 
   const goLive = async () => {
@@ -148,16 +152,18 @@ export const Actions = ({ isHost, openRequests }: Props) => {
           size={45}
           onPress={toggleSpeakerPhone}
           bg={isSpeaker ? '#d8d9e4' : undefined}
-          icon={<SpeakerIcon />}
+          icon={<SpeakerIcon color={colors.TEXT} />}
         />
       </View>
       <StackView align="center" justify="center" style={{ columnGap: 50 }}>
         <Text onPress={onEndCall} style={{ color: colors.RED, paddingVertical: 10 }}>
           {isHost ? 'End Call' : 'Leave Room'}
         </Text>
-        <Text onPress={openRequests} style={{ color: colors.BLUE, paddingVertical: 10 }}>
-          Speak Requests
-        </Text>
+        {canAcceptRequest && (
+          <Text onPress={openRequests} style={{ color: colors.BLUE, paddingVertical: 10 }}>
+            Speak Requests
+          </Text>
+        )}
       </StackView>
     </View>
   );
@@ -172,7 +178,7 @@ const style = StyleSheet.create({
     width: '100%',
   },
   action: {
-    height: 75,
+    height: 65,
     borderRadius: 10,
     paddingHorizontal: 20,
     flexDirection: 'row',

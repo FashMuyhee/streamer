@@ -1,11 +1,13 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Pressable } from 'react-native';
 import React from 'react';
 import { StackView, Text } from '@components';
 import { BORDER_RADIUS, COLORS } from '@utils';
-import { useTheme } from '@hooks';
+import { useConfirmationAlert, useTheme } from '@hooks';
 import {
+  OwnCapability,
   speaking,
   StreamVideoParticipant,
+  useCall,
   useCallStateHooks,
 } from '@stream-io/video-react-native-sdk';
 import { UserAvatar } from '@components/commons/UserAvatar';
@@ -14,12 +16,15 @@ type Props = {};
 
 type ParticipantProps = {
   participant: StreamVideoParticipant;
+  isHost: boolean;
 };
 
 export const Participants = (props: Props) => {
   const { colors } = useTheme();
-  const { useParticipants } = useCallStateHooks();
+  const { useParticipants, useCallCreatedBy } = useCallStateHooks();
   const participants = useParticipants({ sortBy: speaking });
+  const hostUser = useCallCreatedBy();
+  const isHost = (id: string) => hostUser?.id === id;
 
   return (
     <View style={[styles.container, { backgroundColor: colors.SECONDARY }]}>
@@ -27,24 +32,55 @@ export const Participants = (props: Props) => {
       {/* users */}
       <StackView justify="flex-start" align="center" style={styles.participantList}>
         {participants.map((participant, index) => (
-          <Participant key={index} participant={participant} />
+          <Participant key={index} participant={participant} isHost={isHost(participant.userId)} />
         ))}
       </StackView>
     </View>
   );
 };
-const Participant = ({ participant }: ParticipantProps) => {
+const Participant = ({ participant, isHost }: ParticipantProps) => {
+  const toggleMicAlert = useConfirmationAlert();
+  const call = useCall();
+  const { useHasPermissions } = useCallStateHooks();
+  const canUpdatePermissions = useHasPermissions(OwnCapability.UPDATE_CALL_PERMISSIONS);
+  const isMute = true;
+
+  const toggleMic = async (id: string) => {
+    await call!.updateUserPermissions({
+      user_id: id,
+      grant_permissions: [OwnCapability.SEND_AUDIO],
+    });
+  };
+
+  const onToggleUserMic = () => {
+    console.log('dsds');
+    if (canUpdatePermissions) {
+      toggleMicAlert.onShow({
+        title: isMute ? 'Unmute User' : 'Mute User',
+        message: isMute
+          ? `Give ${participant.name} speaking capability`
+          : `Mute ${participant.name}`,
+        onProceed: () => toggleMic(participant.userId),
+        proceedText: isMute ? 'Unmute' : 'Mute',
+        closeText: 'Cancel',
+      });
+    }
+  };
+
   return (
-    <View style={styles.participant}>
+    <Pressable style={styles.participant} onPress={onToggleUserMic} disabled={isHost}>
       <UserAvatar
         user={{ id: participant.userId, image: participant.image, name: participant.name }}
         size="normal"
+        onPress={() => (isHost ? undefined : onToggleUserMic())}
       />
       <StackView align="center" style={{ columnGap: 3 }}>
-        <Text>{participant.name}</Text>
+        <Text fontSize={13} textAlign="center">
+          {participant.name} {isHost ? '(Host)' : ''}
+        </Text>
         {participant.isSpeaking && <View style={styles.speakingBadge} />}
       </StackView>
-    </View>
+    </Pressable>
   );
 };
 
@@ -52,13 +88,16 @@ const styles = StyleSheet.create({
   container: {
     borderRadius: BORDER_RADIUS,
     padding: 10,
-    minHeight: 100,
+    minHeight: 140,
     rowGap: 4,
     marginTop: 20,
   },
   participantList: {
     marginTop: 5,
     columnGap: 5,
+    flexWrap: 'wrap',
+    rowGap: 10,
+    alignContent: 'flex-start',
   },
   participantAvatar: {
     alignItems: 'center',
@@ -70,7 +109,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS['dark'].BLUE,
   },
   participant: {
-    height: 80,
+    height: 100,
     alignItems: 'center',
     justifyContent: 'center',
     width: '30%',
