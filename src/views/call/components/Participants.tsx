@@ -1,9 +1,14 @@
-import { Image, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import { StackView, Text } from '@components';
 import { BORDER_RADIUS, COLORS } from '@utils';
 import { useTheme } from '@hooks';
-import { StreamVideoParticipant, useCallStateHooks } from '@stream-io/video-react-native-sdk';
+import {
+  speaking,
+  StreamVideoParticipant,
+  useCallStateHooks,
+} from '@stream-io/video-react-native-sdk';
+import { UserAvatar } from '@components/commons/UserAvatar';
 
 type Props = {};
 
@@ -14,7 +19,7 @@ type ParticipantProps = {
 export const Participants = (props: Props) => {
   const { colors } = useTheme();
   const { useParticipants } = useCallStateHooks();
-  const participants = useParticipants();
+  const participants = useParticipants({ sortBy: speaking });
 
   return (
     <View style={[styles.container, { backgroundColor: colors.SECONDARY }]}>
@@ -31,18 +36,10 @@ export const Participants = (props: Props) => {
 const Participant = ({ participant }: ParticipantProps) => {
   return (
     <View style={styles.participant}>
-      <View style={styles.participantAvatar}>
-        {participant.image ? (
-          <Image
-            style={{ width: '100%', height: '100%', borderRadius: 30 }}
-            source={{ uri: participant.image }}
-          />
-        ) : (
-          <Text isBold color="white" fontSize={20}>
-            {participant.name.charAt(0)}
-          </Text>
-        )}
-      </View>
+      <UserAvatar
+        user={{ id: participant.userId, image: participant.image, name: participant.name }}
+        size="normal"
+      />
       <StackView align="center" style={{ columnGap: 3 }}>
         <Text>{participant.name}</Text>
         {participant.isSpeaking && <View style={styles.speakingBadge} />}

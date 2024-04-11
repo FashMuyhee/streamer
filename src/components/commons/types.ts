@@ -36,3 +36,22 @@ export interface ButtonProps {
   fontSize?: number;
   height?: number;
 }
+
+export interface IconButtonProps {
+  icon: React.ReactElement;
+  style?: StyleProp<ViewStyle>;
+  size?: number;
+  onPress?: () => void;
+  disabled?: boolean;
+  rounded?: boolean;
+  bg?: string;
+}
+
+// USER AVATAR PROPS
+export type UserSize = 'small' | 'normal';
+
+export type UserProps = {
+  size?: UserSize;
+  onPress?: () => void;
+  user?: { id: string; name: string; image: string };
+};

@@ -1,16 +1,20 @@
 import { Pressable, StyleSheet, View } from 'react-native';
 import React from 'react';
-import { CloudIcon, MuteIcon, StopIcon, Text, UnmuteIcon } from '@components';
+import { CloudIcon, MuteIcon, StackView, StopIcon, Text, UnmuteIcon } from '@components';
 import { COLORS } from '@utils';
 import { useConfirmationAlert, useTheme } from '@hooks';
 import { useCall, useCallStateHooks } from '@stream-io/video-react-native-sdk';
 import { useNavigation } from '@react-navigation/native';
+import { useToggleMic } from '../hooks';
+import Toast from 'react-native-toast-message';
+import { IconButton } from '@components/commons/IconButton';
 
 type Props = {
   isHost: boolean;
+  openRequests: () => void;
 };
 
-export const Actions = ({ isHost }: Props) => {
+export const Actions = ({ isHost, openRequests }: Props) => {
   const { colors } = useTheme();
 
   const navigation = useNavigation();
@@ -21,29 +25,25 @@ export const Actions = ({ isHost }: Props) => {
 
   const call = useCall();
 
-  const { useMicrophoneState, useIsCallLive } = useCallStateHooks();
+  const { useIsCallLive } = useCallStateHooks();
   const isLive = useIsCallLive();
-  const { isMute } = useMicrophoneState();
-
-  const onToggleMute = () => {
-    call?.microphone.toggle();
-  };
+  const { isMute, toggleMic, disabled } = useToggleMic();
 
   const goLive = async () => {
     try {
       await call?.goLive();
+      Toast.show({ text1: 'Yippie, you\re live 🥳', type: 'success' });
     } catch (error) {
-      console.log(error);
-      // err message
+      Toast.show({ text1: 'Something went wrong try again', type: 'error' });
     }
   };
 
   const stopLive = async () => {
     try {
       await call?.stopLive();
+      Toast.show({ text1: 'Stream stopped ', type: 'success' });
     } catch (error) {
-      console.log(error);
-      // err message
+      Toast.show({ text1: 'Something went wrong try again', type: 'error' });
     }
   };
 
@@ -70,7 +70,7 @@ export const Actions = ({ isHost }: Props) => {
           await call?.leave();
           navigation.goBack();
         } catch (error) {
-          // err message
+          Toast.show({ text1: 'Something went wrong try again', type: 'error' });
         }
       },
       proceedText: 'Leave',
@@ -86,8 +86,9 @@ export const Actions = ({ isHost }: Props) => {
         try {
           await call?.endCall();
           navigation.goBack();
+          Toast.show({ text1: 'Call Ended', type: 'info' });
         } catch (error) {
-          // err message
+          Toast.show({ text1: 'Something went wrong try again', type: 'error' });
         }
       },
       proceedText: 'End Live',
@@ -107,25 +108,29 @@ export const Actions = ({ isHost }: Props) => {
     <View style={style.container}>
       <View style={[style.action, { backgroundColor: colors.SECONDARY }]}>
         {isHost && (
-          <Pressable
+          <IconButton
+            size={45}
             onPress={onToggleLive}
-            style={[style.actionBtn, { backgroundColor: COLORS['dark'].RED }]}
-            role="button"
-          >
-            {isLive ? <StopIcon /> : <CloudIcon />}
-          </Pressable>
+            bg={COLORS['dark'].RED}
+            icon={isLive ? <StopIcon /> : <CloudIcon />}
+          />
         )}
-        <Pressable
-          onPress={onToggleMute}
-          style={[style.actionBtn, { backgroundColor: '#0e9c60' }]}
-          role="button"
-        >
-          {isMute ? <UnmuteIcon /> : <MuteIcon />}
-        </Pressable>
+        <IconButton
+          size={45}
+          onPress={toggleMic}
+          disabled={disabled}
+          bg="#0e9c60"
+          icon={isMute ? <UnmuteIcon /> : <MuteIcon />}
+        />
       </View>
-      <Text onPress={onEndCall} style={{ color: colors.BLUE, paddingVertical: 10 }}>
-        {isHost ? 'End Call' : 'Leave Room'}
-      </Text>
+      <StackView align="center" justify="center" style={{ columnGap: 50 }}>
+        <Text onPress={onEndCall} style={{ color: colors.RED, paddingVertical: 10 }}>
+          {isHost ? 'End Call' : 'Leave Room'}
+        </Text>
+        <Text onPress={openRequests} style={{ color: colors.BLUE, paddingVertical: 10 }}>
+          Speak Requests
+        </Text>
+      </StackView>
     </View>
   );
 };
@@ -146,12 +151,5 @@ const style = StyleSheet.create({
     alignItems: 'center',
     columnGap: 10,
     marginBottom: 10,
-  },
-  actionBtn: {
-    width: 45,
-    height: 45,
-    borderRadius: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 });
