@@ -53,7 +53,6 @@ const Participant = ({ participant, isHost }: ParticipantProps) => {
   };
 
   const onToggleUserMic = () => {
-    console.log('dsds');
     if (canUpdatePermissions) {
       toggleMicAlert.onShow({
         title: isMute ? 'Unmute User' : 'Mute User',
