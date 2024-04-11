@@ -36,7 +36,8 @@ export const ConfirmationAlert = ({ isVisible, option, onClose }: Props) => {
         >
           <View
             style={{
-              height: SCREEN_HEIGHT * 0.25,
+              minHeight: SCREEN_HEIGHT * 0.2,
+              maxHeight: SCREEN_HEIGHT * 0.25,
               width: '85%',
               borderRadius: 16,
               backgroundColor: colors.SECONDARY,
