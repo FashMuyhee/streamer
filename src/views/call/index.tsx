@@ -7,6 +7,9 @@ import { CALL_ID } from '@utils';
 import { Actions, Description, Participants } from './components';
 import { useCreateCall } from './hooks';
 import { RouteProp } from '@react-navigation/native';
+import { useConfirmationAlert } from '@hooks';
+import { Alert } from 'react-native';
+import { PermissionRequests } from './sheets/pemission-requests';
 
 type Props = {
   navigation: NativeStackNavigationProp<ScreenParams>;
@@ -15,6 +18,8 @@ type Props = {
 
 export const CallScreen = ({ navigation, route }: Props) => {
   const { host } = route.params;
+  const [hasPermissionRequest, setHasPermissionsRequest] = React.useState(false);
+  const endLiveAlert = useConfirmationAlert();
 
   const { call, isLoading } = useCreateCall({
     id: CALL_ID,
@@ -22,6 +27,17 @@ export const CallScreen = ({ navigation, route }: Props) => {
     description: 'We are doing a test of react native audio rooms',
     host,
   });
+
+  const togglePermissionList = () => {
+    setHasPermissionsRequest(!hasPermissionRequest);
+  };
+  // React.useEffect(() => {
+  //   if (isEnded) {
+  //     Alert.alert('Stream Ended', 'This stream has been ended by the host', [
+  //       { text: 'Ok', onPress: () => navigation.goBack(), style: 'default' },
+  //     ]);
+  //   }
+  // }, [isEnded]);
 
   if (isLoading || !call) {
     return (
@@ -33,10 +49,16 @@ export const CallScreen = ({ navigation, route }: Props) => {
 
   return (
     <ScreenWrapper noEdges>
-      <StreamCall call={call}>
+      <StreamCall
+        call={call}
+        mediaDeviceInitialState={{
+          initialAudioEnabled: false,
+        }}
+      >
         <Description />
         <Participants />
-        <Actions isHost={call?.isCreatedByMe} />
+        <Actions isHost={call?.isCreatedByMe} openRequests={togglePermissionList} />
+        <PermissionRequests isOpen={hasPermissionRequest} onClose={togglePermissionList} />
       </StreamCall>
     </ScreenWrapper>
   );
