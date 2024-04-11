@@ -90,7 +90,7 @@ export const Actions = ({ isHost }: Props) => {
           // err message
         }
       },
-      proceedText: 'End Stream',
+      proceedText: 'End Live',
       closeText: 'Cancel',
     });
   };

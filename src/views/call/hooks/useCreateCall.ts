@@ -5,9 +5,10 @@ type Params = {
   id: string;
   title: string;
   description: string;
+  host: boolean;
 };
 
-export const useCreateCall = ({ description, id, title }: Params) => {
+export const useCreateCall = ({ description, id, title, host }: Params) => {
   const [call, setCall] = React.useState<Call | null>(null);
   const [isLoading, setIsLoading] = React.useState(true);
 
@@ -18,7 +19,7 @@ export const useCreateCall = ({ description, id, title }: Params) => {
     const call = client!.call('audio_room', id);
     try {
       await call.join({
-        create: true,
+        create: host,
         data: {
           custom: { title, description },
         },

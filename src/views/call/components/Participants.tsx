@@ -29,24 +29,23 @@ export const Participants = (props: Props) => {
   );
 };
 const Participant = ({ participant }: ParticipantProps) => {
-  const { colors, theme } = useTheme();
-
   return (
     <View style={styles.participant}>
-      <View
-        style={[
-          styles.participantAvatar,
-          { borderColor: theme == 'dark' ? colors.PRIMARY : colors.BLUE },
-        ]}
-      >
-        <Image
-          style={{ width: '100%', height: '100%', borderRadius: 30 }}
-          source={{ uri: participant.image }}
-        />
+      <View style={styles.participantAvatar}>
+        {participant.image ? (
+          <Image
+            style={{ width: '100%', height: '100%', borderRadius: 30 }}
+            source={{ uri: participant.image }}
+          />
+        ) : (
+          <Text isBold color="white" fontSize={20}>
+            {participant.name.charAt(0)}
+          </Text>
+        )}
       </View>
       <StackView align="center" style={{ columnGap: 3 }}>
         <Text>{participant.name}</Text>
-        <View style={styles.speakingBadge} />
+        {participant.isSpeaking && <View style={styles.speakingBadge} />}
       </StackView>
     </View>
   );
@@ -62,7 +61,7 @@ const styles = StyleSheet.create({
   },
   participantList: {
     marginTop: 5,
-    columnGap: 10,
+    columnGap: 5,
   },
   participantAvatar: {
     alignItems: 'center',
@@ -70,8 +69,8 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    borderWidth: 2,
     rowGap: 3,
+    backgroundColor: COLORS['dark'].BLUE,
   },
   participant: {
     height: 80,
