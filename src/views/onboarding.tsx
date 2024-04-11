@@ -12,7 +12,7 @@ export const OnboardingScreen = ({ navigation }: Props) => {
   const { theme } = useTheme();
 
   return (
-    <ScreenWrapper>
+    <ScreenWrapper style={{ alignItems: 'center', justifyContent: 'center' }}>
       <Button title="Continue to App" onPress={() => navigation.navigate('home')} />
     </ScreenWrapper>
   );
