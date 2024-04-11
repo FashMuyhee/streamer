@@ -1,6 +1,15 @@
-import { Pressable, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import React from 'react';
-import { CloudIcon, MuteIcon, StackView, StopIcon, Text, UnmuteIcon } from '@components';
+import {
+  CloudIcon,
+  EarphoneIcon,
+  MuteIcon,
+  SpeakerIcon,
+  StackView,
+  StopIcon,
+  Text,
+  UnmuteIcon,
+} from '@components';
 import { COLORS } from '@utils';
 import { useConfirmationAlert, useTheme } from '@hooks';
 import { useCall, useCallStateHooks } from '@stream-io/video-react-native-sdk';
@@ -8,6 +17,8 @@ import { useNavigation } from '@react-navigation/native';
 import { useToggleMic } from '../hooks';
 import Toast from 'react-native-toast-message';
 import { IconButton } from '@components/commons/IconButton';
+//@ts-ignore
+import InCallManager from 'react-native-incall-manager';
 
 type Props = {
   isHost: boolean;
@@ -28,11 +39,18 @@ export const Actions = ({ isHost, openRequests }: Props) => {
   const { useIsCallLive } = useCallStateHooks();
   const isLive = useIsCallLive();
   const { isMute, toggleMic, disabled } = useToggleMic();
+  const [isSpeaker, setIsSpeaker] = React.useState(false);
+
+  // Called on call join
+  const toggleSpeakerPhone = () => {
+    InCallManager.setSpeakerphoneOn(!isSpeaker);
+    setIsSpeaker(isSpeaker);
+  };
 
   const goLive = async () => {
     try {
       await call?.goLive();
-      Toast.show({ text1: 'Yippie, you\re live 🥳', type: 'success' });
+      Toast.show({ text1: "Yippie, you're live 🥳", type: 'success' });
     } catch (error) {
       Toast.show({ text1: 'Something went wrong try again', type: 'error' });
     }
@@ -42,6 +60,8 @@ export const Actions = ({ isHost, openRequests }: Props) => {
     try {
       await call?.stopLive();
       Toast.show({ text1: 'Stream stopped ', type: 'success' });
+      // Called when call is left
+      InCallManager.stop();
     } catch (error) {
       Toast.show({ text1: 'Something went wrong try again', type: 'error' });
     }
@@ -68,6 +88,8 @@ export const Actions = ({ isHost, openRequests }: Props) => {
       onProceed: async () => {
         try {
           await call?.leave();
+          // Called when call is left
+          InCallManager.stop();
           navigation.goBack();
         } catch (error) {
           Toast.show({ text1: 'Something went wrong try again', type: 'error' });
@@ -121,6 +143,12 @@ export const Actions = ({ isHost, openRequests }: Props) => {
           disabled={disabled}
           bg="#0e9c60"
           icon={isMute ? <UnmuteIcon /> : <MuteIcon />}
+        />
+        <IconButton
+          size={45}
+          onPress={toggleSpeakerPhone}
+          bg={isSpeaker ? '#d8d9e4' : undefined}
+          icon={<SpeakerIcon />}
         />
       </View>
       <StackView align="center" justify="center" style={{ columnGap: 50 }}>

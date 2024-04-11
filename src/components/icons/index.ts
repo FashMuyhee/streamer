@@ -5,3 +5,5 @@ export * from './cloud';
 export * from './stop';
 export * from './check';
 export * from './cancel';
+export * from './earphone';
+export * from './speaker';
