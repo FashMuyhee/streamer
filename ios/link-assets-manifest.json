@@ -1,0 +1,29 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/assets/fonts/Jost-Bold.ttf",
+      "sha1": "60eaf9ab668280a6ec2f5fc4f85bd285f22f8313"
+    },
+    {
+      "path": "src/assets/fonts/Jost-BoldItalic.ttf",
+      "sha1": "7bf171ae11f71824c2a4c053976c1aeeb3034b2b"
+    },
+    {
+      "path": "src/assets/fonts/Jost-Italic.ttf",
+      "sha1": "a945463fa91132a6a7774dd7c1f09d8ea2fe5f46"
+    },
+    {
+      "path": "src/assets/fonts/Jost-Medium.ttf",
+      "sha1": "cbf1f8ccae3a749b57e766eaa460a301f2392d41"
+    },
+    {
+      "path": "src/assets/fonts/Jost-MediumItalic.ttf",
+      "sha1": "a2e3c13d5ebce0d6cadd963cb2c6e5ab995c2433"
+    },
+    {
+      "path": "src/assets/fonts/Jost-Regular.ttf",
+      "sha1": "63de8f35a2b969d64b1e4012d26a38e8be1e01ae"
+    }
+  ]
+}
