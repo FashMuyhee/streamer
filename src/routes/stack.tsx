@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ScreenParams } from './type';
-import { CallScreen, HomeScreen, OnboardingScreen, RoomScreen } from '@views';
+import { CallScreen, HomeScreen, OnboardingScreen } from '@views';
 import { BackArrow } from './components';
 import { useTheme } from '@hooks';
 
@@ -30,7 +30,6 @@ export const Stack = () => {
     >
       <Nav.Screen name="onboarding" component={OnboardingScreen} options={{ headerShown: false }} />
       <Nav.Screen name="home" component={HomeScreen} />
-      <Nav.Screen name="room" component={RoomScreen} />
       <Nav.Screen name="call" component={CallScreen} />
     </Nav.Navigator>
   );
