@@ -8,6 +8,7 @@ import { Actions, Description, Loader, Participants } from './components';
 import { useCreateCall } from './hooks';
 import { RouteProp } from '@react-navigation/native';
 import { PermissionRequests, WaitingBanner } from './sheets';
+import Toast from 'react-native-toast-message';
 
 type Props = {
   navigation: NativeStackNavigationProp<ScreenParams>;
@@ -38,6 +39,18 @@ export const CallScreen = ({ navigation, route }: Props) => {
       if (e.error && e.error.code == SfuModels.ErrorCode.LIVE_ENDED) {
         setIsWarningVisible(true);
       }
+    });
+  }, [call]);
+
+  React.useEffect(() => {
+    if (!call) {
+      return;
+    }
+    return call.on('call.ended', (e) => {
+      if (!host) {
+        Toast.show({ text1: 'Host ended stream', type: 'info' });
+      }
+      navigation.goBack();
     });
   }, [call]);
 
