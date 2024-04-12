@@ -12,4 +12,5 @@ export type ColorPalette = {
   RED: string;
   BLUE: string;
   TEXT: string;
+  GREEN:string
 };

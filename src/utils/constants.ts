@@ -28,6 +28,7 @@ export const COLORS: ColorsList<Theme> = {
     RED: '#fd5056',
     BLUE: '#2466ee',
     TEXT: '#1b1b1b',
+    GREEN: '#00b894', //#0e9c60
   },
   dark: {
     PRIMARY: '#090b20',
@@ -35,6 +36,7 @@ export const COLORS: ColorsList<Theme> = {
     RED: '#fd5056',
     BLUE: '#2466ee',
     TEXT: '#FFFFFF',
+    GREEN: '#00b894', //#0e9c60
   },
 };
 
