@@ -13,7 +13,7 @@ export const Stack = () => {
     <Nav.Navigator
       initialRouteName="home"
       screenOptions={{
-        statusBarStyle: theme,
+        statusBarStyle: theme == 'light' ? 'dark' : 'light',
         statusBarColor: colors.PRIMARY,
         headerShadowVisible: false,
         headerTitleAlign: 'center',
