@@ -3,7 +3,7 @@ import React from 'react';
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@utils';
 import { useTheme } from '@hooks';
 import { Button, StackView, Text } from '@components';
-import { CallingState, useCall, useCallStateHooks } from '@stream-io/video-react-native-sdk';
+import { useCall, useCallStateHooks } from '@stream-io/video-react-native-sdk';
 
 type Props = {
   onExitRoom: () => void;
