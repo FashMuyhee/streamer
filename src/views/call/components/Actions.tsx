@@ -156,7 +156,7 @@ export const Actions = ({ isHost, openRequests }: Props) => {
       </View>
       <StackView align="center" justify="center" style={{ columnGap: 50 }}>
         <Text onPress={onEndCall} style={{ color: colors.RED, paddingVertical: 10 }}>
-          {isHost ? 'End Call' : 'Leave Room'}
+          {isHost ? 'End Stream' : 'Leave Stream'}
         </Text>
         {canAcceptRequest && (
           <Text onPress={openRequests} style={{ color: colors.BLUE, paddingVertical: 10 }}>
