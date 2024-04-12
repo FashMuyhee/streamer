@@ -42,6 +42,7 @@ export const Participants = (props: Props) => {
       <View style={[styles.container, { backgroundColor: colors.SECONDARY }]}>
         <Text isBold>Participants</Text>
         {/* users */}
+
         <StackView justify="flex-start" align="center" style={styles.participantList}>
           {participants.map((participant, index) => (
             <Participant

@@ -2,9 +2,8 @@ import { View, Modal, Pressable, StyleSheet } from 'react-native';
 import React from 'react';
 import { IS_ANDROID, SCREEN_HEIGHT, SCREEN_WIDTH } from '@utils';
 import { useConfirmationAlert, useTheme } from '@hooks';
-import { CancelIcon, OptionTile, Text } from '@components';
+import { OptionTile, Text } from '@components';
 import { OwnCapability, StreamVideoParticipant, useCall } from '@stream-io/video-react-native-sdk';
-import Toast from 'react-native-toast-message';
 import { isSpeaker } from '../hooks';
 
 type Props = {
@@ -22,6 +21,7 @@ export const ParticipantActionSheet = ({ isOpen, onClose, user }: Props) => {
   const canSpeak = isSpeaker(user);
 
   const onBlockUser = () => {
+    onClose();
     alert.onShow({
       title: 'Block User',
       message: 'Are you sure you want to block this user?',
@@ -70,7 +70,7 @@ export const ParticipantActionSheet = ({ isOpen, onClose, user }: Props) => {
           </Text>
           <View>
             <OptionTile title={canSpeak ? 'Mute' : 'Unmute'} onPress={onToggleUserMic} />
-            <OptionTile title="Block" />
+            <OptionTile title="Block" onPress={onBlockUser} />
           </View>
         </View>
       </View>

@@ -9,7 +9,7 @@ import {
   Text,
   UnmuteIcon,
 } from '@components';
-import { COLORS } from '@utils';
+import { COLORS, IS_ANDROID } from '@utils';
 import { useConfirmationAlert, useTheme } from '@hooks';
 import { OwnCapability, useCall, useCallStateHooks } from '@stream-io/video-react-native-sdk';
 import { useNavigation } from '@react-navigation/native';
@@ -171,7 +171,7 @@ export const Actions = ({ isHost, openRequests }: Props) => {
 const style = StyleSheet.create({
   container: {
     position: 'absolute',
-    bottom: 30,
+    bottom: IS_ANDROID ? 4 : 30,
     alignSelf: 'center',
     alignItems: 'center',
     width: '100%',

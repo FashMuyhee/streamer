@@ -2,13 +2,19 @@ import React from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ScreenParams } from '@routes/type';
 import { ScreenWrapper } from '@components';
-import { SfuModels, StreamCall, useCallStateHooks } from '@stream-io/video-react-native-sdk';
+import {
+  SfuModels,
+  StreamCall,
+  useCallStateHooks,
+  useConnectedUser,
+} from '@stream-io/video-react-native-sdk';
 import { CALL_ID } from '@utils';
 import { Actions, Description, Loader, Participants } from './components';
 import { useCreateCall } from './hooks';
 import { RouteProp } from '@react-navigation/native';
 import { PermissionRequests, WaitingBanner } from './sheets';
 import Toast from 'react-native-toast-message';
+import { ScrollView } from 'react-native';
 
 type Props = {
   navigation: NativeStackNavigationProp<ScreenParams>;
@@ -19,6 +25,7 @@ export const CallScreen = ({ navigation, route }: Props) => {
   const { host } = route.params;
   const [hasPermissionRequest, setHasPermissionsRequest] = React.useState(false);
   const [isWarningVisible, setIsWarningVisible] = React.useState(false);
+  const connectedUser = useConnectedUser();
 
   const { call, isLoading } = useCreateCall({
     id: CALL_ID,
@@ -54,20 +61,35 @@ export const CallScreen = ({ navigation, route }: Props) => {
     });
   }, [call]);
 
+  React.useEffect(() => {
+    if (!call) {
+      return;
+    }
+    return call.on('call.blocked_user', (e) => {
+      const isMe = e?.user.id === connectedUser?.id;
+      if (isMe) {
+        Toast.show({ text1: 'Host kicked you out', type: 'info' });
+        navigation.goBack();
+      }
+    });
+  }, [call]);
+
   if (isLoading || !call) {
     return <Loader loadingText={host ? 'Creating Live Stream' : 'Joining Stream'} />;
   }
 
   return (
-    <ScreenWrapper noEdges>
-      <StreamCall
-        call={call}
-        mediaDeviceInitialState={{
-          initialAudioEnabled: false,
-        }}
-      >
-        <Description />
-        <Participants />
+    <StreamCall
+      call={call}
+      mediaDeviceInitialState={{
+        initialAudioEnabled: false,
+      }}
+    >
+      <ScreenWrapper noEdges>
+        <ScrollView>
+          <Description />
+          <Participants />
+        </ScrollView>
         <Actions isHost={call?.isCreatedByMe} openRequests={togglePermissionList} />
         <PermissionRequests isOpen={hasPermissionRequest} onClose={togglePermissionList} />
         <WaitingBanner
@@ -75,7 +97,7 @@ export const CallScreen = ({ navigation, route }: Props) => {
           isOpen={isWarningVisible}
           onClose={() => setIsWarningVisible(false)}
         />
-      </StreamCall>
-    </ScreenWrapper>
+      </ScreenWrapper>
+    </StreamCall>
   );
 };

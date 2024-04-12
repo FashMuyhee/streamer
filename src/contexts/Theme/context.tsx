@@ -13,7 +13,7 @@ export const ThemeContext = createContext<IThemeContext>(initialState);
 
 export const ThemeContextProvider = ({ children }: { children: React.ReactNode }) => {
   const systemTheme = useColorScheme();
-  const [userTheme, setUserTheme] = React.useState<Theme>('light');
+  const [userTheme, setUserTheme] = React.useState<Theme>(systemTheme as Theme);
 
   const colors = React.useMemo(() => {
     return COLORS[userTheme];
