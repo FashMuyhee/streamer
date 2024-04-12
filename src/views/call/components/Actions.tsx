@@ -43,7 +43,6 @@ export const Actions = ({ isHost, openRequests }: Props) => {
   const canAcceptRequest = React.useMemo(() => {
     return canUpdatePermissions && speakingRequests.length > 0;
   }, [speakingRequests, canUpdatePermissions]);
-  
 
   // FUNCTIONS AND ACTIONS
   const toggleSpeakerPhone = () => {
@@ -152,7 +151,7 @@ export const Actions = ({ isHost, openRequests }: Props) => {
           size={45}
           onPress={toggleSpeakerPhone}
           bg={isSpeaker ? '#d8d9e4' : undefined}
-          icon={<SpeakerIcon color={colors.TEXT} />}
+          icon={<SpeakerIcon color={isSpeaker ? COLORS.light['TEXT'] : colors['TEXT']} />}
         />
       </View>
       <StackView align="center" justify="center" style={{ columnGap: 50 }}>
@@ -178,7 +177,7 @@ const style = StyleSheet.create({
     width: '100%',
   },
   action: {
-    height: 65,
+    height: 70,
     borderRadius: 10,
     paddingHorizontal: 20,
     flexDirection: 'row',

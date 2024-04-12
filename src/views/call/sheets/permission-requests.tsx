@@ -1,6 +1,6 @@
 import { View, Modal, Pressable, StyleSheet } from 'react-native';
 import React from 'react';
-import { BORDER_RADIUS, COLORS, IS_ANDROID, SCREEN_HEIGHT, SCREEN_WIDTH } from '@utils';
+import { COLORS, IS_ANDROID, SCREEN_HEIGHT, SCREEN_WIDTH } from '@utils';
 import { useTheme } from '@hooks';
 import { CancelIcon, CheckIcon, StackView, Text } from '@components';
 import {
@@ -34,8 +34,6 @@ const RequestCard = ({ request, onApprove, onDeny }: RequestCardProps) => {
       align="center"
       style={{
         height: 50,
-        borderRadius: BORDER_RADIUS,
-        backgroundColor: colors.SECONDARY,
         marginBottom: 5,
         paddingHorizontal: 10,
       }}
@@ -88,7 +86,7 @@ export const PermissionRequests = ({ isOpen, onClose }: Props) => {
     >
       <View style={{ width: '100%', height: '100%', backgroundColor: 'rgba(18, 18, 18, 0.51)' }}>
         <Pressable style={{ width: '100%', height: '100%' }} onPress={onClose} />
-        <View style={[styles.detachedContainer, { backgroundColor: colors.PRIMARY }]}>
+        <View style={[styles.detachedContainer, { backgroundColor: colors.SECONDARY }]}>
           <Text isBold fontSize={17}>
             Permission Requests
           </Text>

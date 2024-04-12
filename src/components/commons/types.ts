@@ -55,3 +55,10 @@ export type UserProps = {
   onPress?: () => void;
   user?: { id: string; name: string; image: string };
 };
+
+export type OptionTileProps = {
+  title: string;
+  styles?: StyleProp<ViewStyle>;
+  onPress?: () => void;
+  icon?: React.ReactNode;
+};

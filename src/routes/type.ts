@@ -2,5 +2,5 @@ export type ScreenParams = {
   home: undefined;
   room: undefined;
   onboarding: undefined;
-  call: undefined;
+  call: { host: boolean };
 };

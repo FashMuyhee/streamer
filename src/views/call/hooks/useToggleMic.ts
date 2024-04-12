@@ -15,19 +15,16 @@ export const useToggleMic = () => {
   const hasPermission = useHasPermissions(OwnCapability.SEND_AUDIO);
   const connectedUser = useConnectedUser();
 
-  const canRequestSpeakingPermissions = call?.permissionsContext.canRequest(
-    OwnCapability.SEND_AUDIO
-  );
-
   const [isAwaitingAudioApproval, setIsAwaitingAudioApproval] = React.useState(false);
 
   const onPress = async () => {
     if (!hasPermission) {
       setIsAwaitingAudioApproval(true);
       Toast.show({ text1: 'Request Sent, awaiting approval', type: 'info' });
-      return call?.requestPermissions({
+      await call?.requestPermissions({
         permissions: [OwnCapability.SEND_AUDIO],
       });
+      return;
     }
     call?.microphone.toggle();
   };
@@ -46,11 +43,11 @@ export const useToggleMic = () => {
       setIsAwaitingAudioApproval(false);
       // automatically publish/unpublish audio stream based on the new permissions
       if (event.own_capabilities.includes(OwnCapability.SEND_AUDIO)) {
-        Toast.show({ text1: 'Request Approved', type: 'success' });
+        Toast.show({ text1: 'Mic Opened', type: 'success' });
         call.microphone.enable();
       } else {
         call.microphone.disable();
-        Toast.show({ text1: 'Request Revoked', type: 'info' });
+        Toast.show({ text1: 'Muted', type: 'info' });
       }
     });
 
@@ -58,7 +55,7 @@ export const useToggleMic = () => {
   }, [call, connectedUser]);
 
   return {
-    disabled: !hasPermission || !canRequestSpeakingPermissions || isAwaitingAudioApproval,
+    disabled: isAwaitingAudioApproval,
     isMute,
     toggleMic: onPress,
   };
