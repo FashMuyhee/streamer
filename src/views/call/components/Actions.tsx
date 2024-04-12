@@ -87,8 +87,8 @@ export const Actions = ({ isHost, openRequests }: Props) => {
 
   const onLeaveRoom = () => {
     leaveAlert.onShow({
-      title: 'Leave Room',
-      message: 'Are you sure you want to leave the room?',
+      title: 'Leave Stream',
+      message: 'Are you sure you want to leave this stream ?',
       onProceed: async () => {
         try {
           await call?.leave();
@@ -106,18 +106,18 @@ export const Actions = ({ isHost, openRequests }: Props) => {
 
   const onEndLive = () => {
     endLiveAlert.onShow({
-      title: 'End Live',
-      message: 'Are you sure you want to end the live?',
+      title: 'End Stream',
+      message: 'Are you sure you want to end the stream ?',
       onProceed: async () => {
         try {
           await call?.endCall();
           navigation.goBack();
-          Toast.show({ text1: 'Call Ended', type: 'info' });
+          Toast.show({ text1: 'Stream Ended', type: 'info' });
         } catch (error) {
           Toast.show({ text1: 'Something went wrong try again', type: 'error' });
         }
       },
-      proceedText: 'End Live',
+      proceedText: 'End Stream',
       closeText: 'Cancel',
     });
   };

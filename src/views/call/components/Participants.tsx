@@ -1,6 +1,6 @@
 import { StyleSheet, View, Pressable } from 'react-native';
 import React from 'react';
-import { StackView, Text } from '@components';
+import { MuteIcon, StackView, Text } from '@components';
 import { BORDER_RADIUS, COLORS } from '@utils';
 import { useConfirmationAlert, useTheme } from '@hooks';
 import {
@@ -39,6 +39,8 @@ export const Participants = (props: Props) => {
   );
 };
 const Participant = ({ participant, isHost }: ParticipantProps) => {
+  const { colors } = useTheme();
+
   const toggleMicAlert = useConfirmationAlert();
   const call = useCall();
   const { useHasPermissions } = useCallStateHooks();
@@ -73,7 +75,10 @@ const Participant = ({ participant, isHost }: ParticipantProps) => {
         size="normal"
         onPress={() => (isHost ? undefined : onToggleUserMic())}
       />
-      <StackView align="center" style={{ columnGap: 3 }}>
+      <View style={styles.mic}>
+        <MuteIcon color={colors.TEXT} />
+      </View>
+      <StackView align="center" style={{ columnGap: 3, marginTop: 5 }}>
         <Text fontSize={13} textAlign="center">
           {participant.name} {isHost ? '(Host)' : ''}
         </Text>
@@ -110,7 +115,7 @@ const styles = StyleSheet.create({
   participant: {
     height: 100,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     width: '30%',
   },
   speakingBadge: {
@@ -118,5 +123,10 @@ const styles = StyleSheet.create({
     width: 5,
     height: 5,
     borderRadius: 5,
+  },
+  mic: {
+    position: 'absolute',
+    bottom: 40,
+    right: 20,
   },
 });
