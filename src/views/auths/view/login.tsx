@@ -2,20 +2,21 @@ import React from 'react';
 import { Button, PasswordTextInput, Text, TextInput } from '@components';
 import { NavigationProp } from '@react-navigation/native';
 import { AuthScreenParams } from '@routes/type';
-import { AuthWrapper } from '../component';
+import { AuthWrapper, GoogleButton } from '../component';
 import { TextInput as RNTextInput } from 'react-native';
+import { COLORS } from '@utils';
 
 type Props = {
   navigation: NavigationProp<AuthScreenParams>;
 };
 
-export const LoginScreen = (props: Props) => {
+export const LoginScreen = ({ navigation }: Props) => {
   const passwordInput = React.useRef<RNTextInput>(null);
 
   return (
     <AuthWrapper>
       <Text fontSize={24} isBold textAlign="center" style={{ marginTop: '5%' }}>
-        Welcome back
+        Welcome back 😎
       </Text>
       <Text fontSize={14} textAlign="center" style={{ marginTop: 5, marginBottom: 30 }}>
         Hello there, login to continue
@@ -29,6 +30,10 @@ export const LoginScreen = (props: Props) => {
       />
       <PasswordTextInput placeholder="Password" ref={passwordInput} />
       <Button title="Login" />
+      <GoogleButton title="Continue with Google" />
+      <Text onPress={() => navigation.navigate('register')} textAlign="center" style={{ marginTop: 20 }}>
+        Don't have an account ? <Text color={COLORS['dark'].BLUE}>Register</Text>
+      </Text>
     </AuthWrapper>
   );
 };

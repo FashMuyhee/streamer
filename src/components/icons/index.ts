@@ -7,3 +7,4 @@ export * from './check';
 export * from './cancel';
 export * from './earphone';
 export * from './speaker';
+export * from './google-logo';
