@@ -1,6 +1,6 @@
 import React from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { ScreenParams } from '@routes/type';
+import { ProtectedScreenParams } from '@routes/type';
 import { ScreenWrapper } from '@components';
 import {
   SfuModels,
@@ -17,8 +17,8 @@ import Toast from 'react-native-toast-message';
 import { ScrollView } from 'react-native';
 
 type Props = {
-  navigation: NativeStackNavigationProp<ScreenParams>;
-  route: RouteProp<ScreenParams, 'call'>;
+  navigation: NativeStackNavigationProp<ProtectedScreenParams>;
+  route: RouteProp<ProtectedScreenParams, 'call'>;
 };
 
 export const CallScreen = ({ navigation, route }: Props) => {

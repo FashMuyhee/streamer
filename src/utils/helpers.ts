@@ -15,3 +15,16 @@ export const initializeText = (text: string, single: boolean = true, delimiter: 
   if (single) return text.charAt(0);
   return map.join(delimiter);
 };
+
+
+/**
+ * check if a string variable is empty
+ * @param str
+ * @returns
+ */
+export const isEmptyString = (str?: string) => {
+  if (str) {
+    return false;
+  }
+  return true;
+};
