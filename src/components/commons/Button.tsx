@@ -13,7 +13,7 @@ export const Button: React.FunctionComponent<ButtonProps> = ({
   bg = COLORS['light'].BLUE,
   textColor = COLORS['dark'].TEXT,
   fontSize = 16,
-  height = 50,
+  height = 45,
 }) => {
   const isDisabled = isLoading ? true : disabled;
 

@@ -1,4 +1,4 @@
-import { GestureResponderEvent, StyleProp, TextStyle, ViewStyle } from 'react-native';
+import { GestureResponderEvent, KeyboardType, ReturnKeyType, StyleProp, TextStyle, ViewStyle, TextInputProps as InputProps } from 'react-native';
 
 // TEXT COMPONENTS TYPES
 export interface TextProps {
@@ -62,3 +62,21 @@ export type OptionTileProps = {
   onPress?: () => void;
   icon?: React.ReactNode;
 };
+
+export interface TextInputProps extends InputProps {
+  keyboardType?: KeyboardType;
+  returnKeyType?: ReturnKeyType;
+  placeholder?: string;
+  multiline?: boolean;
+  secureText?: boolean;
+  hintMessage?: string;
+  hasError?: boolean;
+  required?: boolean;
+  placeholderTextColor?: string;
+  borderColor?: string;
+  maxLength?: number;
+  mb?: number;
+  width?: ViewStyle['width'];
+  disabled?: boolean;
+  rightIcon?: React.ReactElement;
+}
