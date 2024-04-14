@@ -1,6 +1,12 @@
-export type ScreenParams = {
+export type ProtectedScreenParams = {
   home: undefined;
   room: undefined;
-  onboarding: undefined;
   call: { host: boolean };
+};
+
+export type AuthScreenParams = {
+  onboarding: undefined;
+  login: undefined;
+  register: undefined;
+
 };

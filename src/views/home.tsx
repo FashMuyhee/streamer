@@ -1,11 +1,11 @@
 import React from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { ScreenParams } from '@routes/type';
+import { ProtectedScreenParams } from '@routes/type';
 import { Button, ScreenWrapper, Text } from '@components';
 import notifee from '@notifee/react-native';
 
 type Props = {
-  navigation: NativeStackNavigationProp<ScreenParams>;
+  navigation: NativeStackNavigationProp<ProtectedScreenParams>;
 };
 
 export const HomeScreen = ({ navigation }: Props) => {

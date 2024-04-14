@@ -1,12 +1,12 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { ScreenParams } from './type';
-import { CallScreen, HomeScreen, OnboardingScreen } from '@views';
+import { ProtectedScreenParams } from './type';
+import { CallScreen, HomeScreen } from '@views';
 import { BackArrow } from './components';
 import { useTheme } from '@hooks';
 
-const Nav = createNativeStackNavigator<ScreenParams>();
+const Nav = createNativeStackNavigator<ProtectedScreenParams>();
 
-export const Stack = () => {
+export const ProtectedStack = () => {
   const { colors, theme } = useTheme();
 
   return (
@@ -28,7 +28,6 @@ export const Stack = () => {
         headerLeft: () => <BackArrow />,
       }}
     >
-      <Nav.Screen name="onboarding" component={OnboardingScreen} options={{ headerShown: false }} />
       <Nav.Screen name="home" component={HomeScreen} />
       <Nav.Screen name="call" component={CallScreen} />
     </Nav.Navigator>
