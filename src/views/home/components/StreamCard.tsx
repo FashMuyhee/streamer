@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     paddingHorizontal: SCREEN_PADDING,
     rowGap: 4,
-    width: SCREEN_WIDTH - (SCREEN_PADDING * 2 + 10),
+    width: SCREEN_WIDTH - (SCREEN_PADDING * 2 ),
     maxHeight: 180,
     marginTop: 15,
   },

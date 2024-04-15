@@ -51,7 +51,7 @@ export const FeatureStreams = (props: Props) => {
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ marginTop: 5, alignItems: 'center', columnGap: 10 }}
+        contentContainerStyle={{ marginTop: 5, alignItems: 'center', }}
       >
         {audioRoomIdeas.map((idea, index) => (
           <StreamCard key={index} {...idea} />

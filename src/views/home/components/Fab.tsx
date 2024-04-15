@@ -1,20 +1,21 @@
-import { StyleSheet, Animated, Easing, View } from 'react-native';
+import { StyleSheet, Animated, Easing } from 'react-native';
 import React from 'react';
-import { COLORS, IS_ANDROID, SCREEN_PADDING, SHADOW_STYLE } from '@utils';
+import { COLORS, IS_ANDROID, SCREEN_PADDING } from '@utils';
 import { AddIcon, ArrowRightIcon, StreamIcon } from '@components';
 import { IconButton } from '@components/commons/IconButton';
 
-const SIZE = 50;
+const C_SIZE = 50;
+const E_SIZE = C_SIZE * 3 + 10 
 
 type Props = {};
 
 export const Fab = (props: Props) => {
-  const scaleAnimate = React.useRef(new Animated.Value(SIZE)).current;
+  const scaleAnimate = React.useRef(new Animated.Value(C_SIZE)).current;
   const [isToggle, setIsToggle] = React.useState(false);
 
   const onToggleAnimation = React.useCallback(() => {
     const flipped = !isToggle;
-    const toValue = flipped ? SIZE * 3 + 10 : SIZE;
+    const toValue = flipped ? E_SIZE : C_SIZE;
     Animated.timing(scaleAnimate, {
       toValue,
       duration: 500,
@@ -25,17 +26,24 @@ export const Fab = (props: Props) => {
     });
   }, [isToggle]);
 
-  const animationStyle = {
+  const animatedFab = {
     width: scaleAnimate,
   };
 
+  const animatedActionList = {
+    opacity: scaleAnimate.interpolate({
+      inputRange: [C_SIZE, E_SIZE],
+      outputRange: [0, 1],
+    }),
+  };
+
   return (
-    <Animated.View style={[styles.fabContainer, animationStyle]}>
-      <IconButton icon={isToggle ? <ArrowRightIcon /> : <StreamIcon />} onPress={onToggleAnimation} size={SIZE} />
-      <View style={{ alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row' }}>
-        <IconButton icon={<StreamIcon />} onPress={() => {}} size={SIZE} />
-        <IconButton icon={<AddIcon />} onPress={() => {}} size={SIZE} />
-      </View>
+    <Animated.View style={[styles.fabContainer, animatedFab]}>
+      <IconButton icon={isToggle ? <ArrowRightIcon /> : <StreamIcon />} onPress={onToggleAnimation} size={C_SIZE} />
+      <Animated.View style={[styles.actionList, animatedActionList]}>
+        <IconButton icon={<StreamIcon />} onPress={() => {}} size={C_SIZE} />
+        <IconButton icon={<AddIcon />} onPress={() => {}} size={C_SIZE} />
+      </Animated.View>
     </Animated.View>
   );
 };
@@ -46,9 +54,14 @@ const styles = StyleSheet.create({
     bottom: IS_ANDROID ? 20 : 40,
     right: SCREEN_PADDING,
     alignSelf: 'flex-end',
-    height: SIZE,
-    borderRadius: SIZE / 2,
+    height: C_SIZE,
+    borderRadius: C_SIZE / 2,
     backgroundColor: COLORS['dark'].BLUE,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+  },
+  actionList: {
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
