@@ -34,7 +34,7 @@ const Participants = () => {
 
 export const CurrentStream = (props: Props) => {
   return (
-    <View style={{ marginTop: 20 }}>
+    <View style={{ marginTop: 10 }}>
       <Text fontSize={25} isBold>
         Currently Listening 🎧
       </Text>

@@ -8,7 +8,7 @@ type Props = {};
 export const Heading = (props: Props) => {
   const partDay = usGetPartOfDay();
   return (
-    <StackView style={{ marginTop: 10, marginBottom: 5 }} justify="space-between">
+    <StackView style={{ marginTop: 10, marginBottom: 15 }} justify="space-between">
       <View>
         <Text textTransform="capitalize">Good {partDay}!</Text>
         <Text fontSize={18} isBold textTransform="capitalize">
