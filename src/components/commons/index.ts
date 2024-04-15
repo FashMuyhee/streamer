@@ -5,3 +5,4 @@ export * from './Flex';
 export * from './OptionTile';
 export * from './TextInput';
 export * from './PasswordInput';
+export * from './UserAvatar';

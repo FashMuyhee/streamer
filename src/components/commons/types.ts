@@ -51,7 +51,7 @@ export interface IconButtonProps {
 export type UserSize = 'small' | 'normal';
 
 export type UserProps = {
-  size?: UserSize;
+  size?: number;
   onPress?: () => void;
   user?: { id: string; name: string; image: string };
 };

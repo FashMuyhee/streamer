@@ -3,12 +3,7 @@ import React from 'react';
 import { MuteIcon, StackView, Text } from '@components';
 import { BORDER_RADIUS, COLORS, SCREEN_PADDING } from '@utils';
 import { useTheme } from '@hooks';
-import {
-  speaking,
-  StreamVideoParticipant,
-  useCallStateHooks,
-  useConnectedUser,
-} from '@stream-io/video-react-native-sdk';
+import { speaking, StreamVideoParticipant, useCallStateHooks, useConnectedUser } from '@stream-io/video-react-native-sdk';
 import { UserAvatar } from '@components/commons/UserAvatar';
 import { ParticipantActionSheet } from '../sheets';
 import { isSpeaker } from '../hooks';
@@ -55,26 +50,19 @@ export const Participants = (props: Props) => {
           ))}
         </StackView>
       </View>
-      <ParticipantActionSheet
-        user={participant as StreamVideoParticipant}
-        isOpen={participant != null}
-        onClose={() => setParticipant(null)}
-      />
+      <ParticipantActionSheet user={participant as StreamVideoParticipant} isOpen={participant != null} onClose={() => setParticipant(null)} />
     </>
   );
 };
 const Participant = ({ participant, isHost, onOpenAction, canModerate }: ParticipantProps) => {
   const { colors } = useTheme();
   const canSpeak = isSpeaker(participant);
+  
   return (
-    <Pressable
-      style={styles.participant}
-      onPress={() => onOpenAction(participant)}
-      disabled={isHost}
-    >
+    <Pressable style={styles.participant} onPress={() => onOpenAction(participant)} disabled={isHost}>
       <UserAvatar
         user={{ id: participant.userId, image: participant.image, name: participant.name }}
-        size="normal"
+        size={60}
         onPress={() => {
           if (!isHost && canModerate) {
             onOpenAction(participant);
