@@ -5,11 +5,14 @@ import { AddIcon, ArrowRightIcon, StreamIcon } from '@components';
 import { IconButton } from '@components/commons/IconButton';
 
 const C_SIZE = 50;
-const E_SIZE = C_SIZE * 3 + 10 
+const E_SIZE = C_SIZE * 3 + 10;
 
-type Props = {};
+type Props = {
+  openJoin: () => void;
+  openCreate: () => void;
+};
 
-export const Fab = (props: Props) => {
+export const Fab = ({ openJoin, openCreate }: Props) => {
   const scaleAnimate = React.useRef(new Animated.Value(C_SIZE)).current;
   const [isToggle, setIsToggle] = React.useState(false);
 
@@ -41,8 +44,15 @@ export const Fab = (props: Props) => {
     <Animated.View style={[styles.fabContainer, animatedFab]}>
       <IconButton icon={isToggle ? <ArrowRightIcon /> : <StreamIcon />} onPress={onToggleAnimation} size={C_SIZE} />
       <Animated.View style={[styles.actionList, animatedActionList]}>
-        <IconButton icon={<StreamIcon />} onPress={() => {}} size={C_SIZE} />
-        <IconButton icon={<AddIcon />} onPress={() => {}} size={C_SIZE} />
+        <IconButton
+          icon={<StreamIcon />}
+          onPress={() => {
+            onToggleAnimation();
+            openJoin();
+          }}
+          size={C_SIZE}
+        />
+        <IconButton icon={<AddIcon />} onPress={openCreate} size={C_SIZE} />
       </Animated.View>
     </Animated.View>
   );
