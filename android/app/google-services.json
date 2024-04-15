@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "349361362421",
+    "project_id": "streamer-app-7c70e",
+    "storage_bucket": "streamer-app-7c70e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:349361362421:android:8b2242ca776b67e9603cbc",
+        "android_client_info": {
+          "package_name": "app.fashmuyhee.streamer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBDKsMHInHvHFaD7mSt2PleLiOkWHMl0c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
