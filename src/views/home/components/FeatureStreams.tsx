@@ -42,12 +42,17 @@ type Props = {};
 
 export const FeatureStreams = (props: Props) => {
   return (
-    <View style={{ marginTop: 30 }}>
+    <View style={{ marginTop: 40 }}>
       <Text fontSize={25} isBold>
         Featured
       </Text>
       <Text fontSize={13}>We curated a list of streams base on your recent streams</Text>
-      <ScrollView horizontal pagingEnabled showsHorizontalScrollIndicator={false} contentContainerStyle={{alignItems:'center', columnGap: 10 }}>
+      <ScrollView
+        horizontal
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{ marginTop: 5, alignItems: 'center', columnGap: 10 }}
+      >
         {audioRoomIdeas.map((idea, index) => (
           <StreamCard key={index} {...idea} />
         ))}

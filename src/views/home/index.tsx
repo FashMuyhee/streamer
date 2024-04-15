@@ -2,7 +2,7 @@ import React from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ProtectedScreenParams } from '@routes/type';
 import { ScreenWrapper, Text } from '@components';
-import { CurrentStream, FeatureStreams, Heading } from './components';
+import { Categories, CurrentStream, FeatureStreams, Heading } from './components';
 import { ScrollView } from 'react-native';
 
 type Props = {
@@ -15,6 +15,7 @@ export const HomeScreen = ({ navigation }: Props) => {
       <Heading />
       <ScrollView showsVerticalScrollIndicator={false}>
         <CurrentStream />
+        <Categories />
         <FeatureStreams />
       </ScrollView>
     </ScreenWrapper>
