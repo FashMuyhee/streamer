@@ -10,7 +10,7 @@ import Toast from 'react-native-toast-message';
 export const App = () => {
   return (
     <ThemeContextProvider>
-      <StreamVideo client={streamClient}>
+      {/* <StreamVideo client={streamClient}> */}
         <ConfirmationAlertContextProvider>
           <RootNavigation />
           <Toast
@@ -23,7 +23,7 @@ export const App = () => {
             bottomOffset={IS_ANDROID ? 0 : undefined}
           />
         </ConfirmationAlertContextProvider>
-      </StreamVideo>
+      {/* </StreamVideo> */}
     </ThemeContextProvider>
   );
 };
