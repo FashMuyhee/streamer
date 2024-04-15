@@ -52,7 +52,14 @@ export const Fab = ({ openJoin, openCreate }: Props) => {
           }}
           size={C_SIZE}
         />
-        <IconButton icon={<AddIcon />} onPress={openCreate} size={C_SIZE} />
+        <IconButton
+          icon={<AddIcon />}
+          onPress={() => {
+            onToggleAnimation();
+            openCreate();
+          }}
+          size={C_SIZE}
+        />
       </Animated.View>
     </Animated.View>
   );
