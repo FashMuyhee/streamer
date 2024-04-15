@@ -8,3 +8,6 @@ export * from './cancel';
 export * from './earphone';
 export * from './speaker';
 export * from './google-logo';
+export * from './stream';
+export * from './add';
+export * from './arrow-right';
