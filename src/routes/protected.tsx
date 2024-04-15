@@ -28,7 +28,7 @@ export const ProtectedStack = () => {
         headerLeft: () => <BackArrow />,
       }}
     >
-      <Nav.Screen name="home" component={HomeScreen} />
+      <Nav.Screen name="home" component={HomeScreen} options={{ headerShown: false }} />
       <Nav.Screen name="call" component={CallScreen} />
     </Nav.Navigator>
   );

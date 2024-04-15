@@ -54,6 +54,7 @@ export type UserProps = {
   size?: number;
   onPress?: () => void;
   user?: { id: string; name: string; image: string };
+  style?: StyleProp<ViewStyle>;
 };
 
 export type OptionTileProps = {

@@ -8,7 +8,7 @@ type Props = {};
 export const RootNavigation = (props: Props) => {
   return (
     <NavigationContainer>
-      <AuthStack />
+      <ProtectedStack />
     </NavigationContainer>
   );
 };

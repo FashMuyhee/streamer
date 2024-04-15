@@ -5,30 +5,27 @@ import { UserProps } from './types';
 import { Text } from './Text';
 import { CenterView } from './Flex';
 
-
-
 const Wrapper = ({ size = 40, user, ...props }: UserProps) => {
- 
-
   const isImageType = !!user?.image;
 
   return (
     <Pressable
-      style={{
-        height: size,
-        width: size,
-        borderRadius: size / 2,
-        backgroundColor: COLORS['dark'].BLUE,
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
+      style={[
+        {
+          height: size,
+          width: size,
+          borderRadius: size / 2,
+          backgroundColor: COLORS['dark'].BLUE,
+          alignItems: 'center',
+          justifyContent: 'center',
+        },
+        props.style,
+      ]}
       hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
       onPress={props.onPress}
     >
       {!isImageType ? (
-        <Text style={{ fontSize: 20, color: 'white' }}>
-          {initializeText(user?.name as string, true)}
-        </Text>
+        <Text fontSize={size*.5} style={{ color: 'white' }}>{initializeText(user?.name as string, true)}</Text>
       ) : (
         <CenterView
           style={{
