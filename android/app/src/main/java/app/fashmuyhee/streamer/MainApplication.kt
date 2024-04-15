@@ -1,4 +1,4 @@
-package com.streamer
+package app.fashmuyhee.streamer
 
 import android.app.Application
 import com.facebook.react.PackageList

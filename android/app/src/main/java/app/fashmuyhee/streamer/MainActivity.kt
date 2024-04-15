@@ -1,4 +1,4 @@
-package com.streamer
+package app.fashmuyhee.streamer
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

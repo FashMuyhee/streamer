@@ -74,9 +74,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.streamer"
+    namespace "app.fashmuyhee.streamer"
     defaultConfig {
-        applicationId "com.streamer"
+        applicationId "app.fashmuyhee.streamer"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
