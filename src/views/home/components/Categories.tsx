@@ -84,5 +84,6 @@ const styles = StyleSheet.create({
     borderRadius: BORDER_RADIUS,
     width: (SCREEN_WIDTH - 45) / 2,
     height: 120,
+    justifyContent:'space-between'
   },
 });

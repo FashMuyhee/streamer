@@ -42,7 +42,7 @@ type Props = {};
 
 export const FeatureStreams = (props: Props) => {
   return (
-    <View style={{ marginTop: 40 }}>
+    <View style={{ marginVertical: 40 }}>
       <Text fontSize={25} isBold>
         Featured
       </Text>
