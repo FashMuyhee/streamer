@@ -34,14 +34,12 @@ export default function usePostRequest<T, K, E>({
 
     try {
       const res = await onPost(payload);
-      if (res) {
-        setData(res);
-        if (onSuccess) {
-          onSuccess(res);
-        }
-        if (paramSuccess) {
-          paramSuccess(res);
-        }
+      setData(res);
+      if (onSuccess) {
+        onSuccess(res);
+      }
+      if (paramSuccess) {
+        paramSuccess(res);
       }
     } catch (error) {
       const err = error as E;
