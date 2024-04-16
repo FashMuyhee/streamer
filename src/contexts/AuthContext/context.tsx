@@ -12,20 +12,20 @@ const initialValue: IAuthContext = {
 export const AuthContext = React.createContext<IAuthContext>(initialValue);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [loggedInUser, setLoggedInUser] = React.useState(false);
   const [streamToken, setStreamToken] = React.useState('');
   const [user, setUser] = React.useState<User | null>(null);
   const [initializing, setInitializing] = React.useState(true);
 
   const onLogout = async () => {
     await auth().signOut();
-    setLoggedInUser(false);
     setStreamToken('');
     setUser(null);
   };
 
   const onAuthStateChanged = (user: FirebaseAuthTypes.User) => {
     if (user) {
+      // TODO:STREAM API
+      // TODO: RETRIEVE USER FROM DB
       setUser({ ...user, firstName: '', lastName: '' });
       setInitializing(false);
     }
@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const value = React.useMemo(() => {
-    const isAuth = loggedInUser && streamToken;
+    const isAuth = !!user && streamToken;
     return {
       isAuth,
       onLogout,
@@ -46,7 +46,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       user,
       initializing,
     };
-  }, [loggedInUser, streamToken]);
+  }, [user, streamToken]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
