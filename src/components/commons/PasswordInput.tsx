@@ -15,20 +15,10 @@ export const PasswordTextInput = React.forwardRef<RNInput, TextInputProps>(({ pl
   const Icon = () => {
     return (
       <Text color={COLORS.dark.BLUE} onPress={toggleVisibility}>
-        {passwordVisible ? 'SHOW' : 'HIDE'}
+        {!passwordVisible ? 'SHOW' : 'HIDE'}
       </Text>
     );
   };
 
-  return (
-    <TextInput
-      {...rest}
-      ref={ref}
-      returnKeyType={returnKeyType}
-      secureText={!passwordVisible}
-      placeholder={placeholder}
-      rightIcon={<Icon />}
-      autoCapitalize="none"
-    />
-  );
+  return <TextInput {...rest} ref={ref} returnKeyType={returnKeyType} secureText={!passwordVisible} placeholder={placeholder} rightIcon={<Icon />} />;
 });

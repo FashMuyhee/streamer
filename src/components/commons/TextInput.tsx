@@ -18,7 +18,6 @@ export const TextInput = React.forwardRef<RNTextInput, TextInputProps>((props, r
     hasError = false,
     placeholderTextColor,
     borderColor = COLORS.dark.GREY,
-    autoCapitalize = undefined,
     maxLength,
     mb = 15,
     width = '100%',
@@ -95,7 +94,6 @@ export const TextInput = React.forwardRef<RNTextInput, TextInputProps>((props, r
             onBlur={() => setIsFocus(false)}
             onFocus={() => setIsFocus(true)}
             secureTextEntry={secureText}
-            autoCapitalize={autoCapitalize}
             maxLength={maxLength}
             focusable
           />

@@ -64,7 +64,7 @@ export type OptionTileProps = {
   icon?: React.ReactNode;
 };
 
-export interface TextInputProps extends InputProps {
+export interface TextInputProps {
   keyboardType?: KeyboardType;
   returnKeyType?: ReturnKeyType;
   placeholder?: string;
@@ -80,4 +80,8 @@ export interface TextInputProps extends InputProps {
   width?: ViewStyle['width'];
   disabled?: boolean;
   rightIcon?: React.ReactElement;
+  value?: string;
+  onChangeText?: (t: string) => void;
+  autoFocus?: boolean;
+  onSubmitEditing?: () => void;
 }
