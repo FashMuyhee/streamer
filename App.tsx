@@ -1,6 +1,6 @@
 import { streamClient } from '@configs';
 import toastConfig from '@configs/toast';
-import { ConfirmationAlertContextProvider, ThemeContextProvider } from '@contexts';
+import { AuthProvider, ConfirmationAlertContextProvider, ThemeContextProvider } from '@contexts';
 import { RootNavigation } from '@routes';
 import { StreamVideo } from '@stream-io/video-react-native-sdk';
 import { IS_ANDROID } from '@utils';
@@ -9,8 +9,9 @@ import Toast from 'react-native-toast-message';
 
 export const App = () => {
   return (
-    <ThemeContextProvider>
-      {/* <StreamVideo client={streamClient}> */}
+    <AuthProvider>
+      <ThemeContextProvider>
+        {/* <StreamVideo client={streamClient}> */}
         <ConfirmationAlertContextProvider>
           <RootNavigation />
           <Toast
@@ -23,7 +24,8 @@ export const App = () => {
             bottomOffset={IS_ANDROID ? 0 : undefined}
           />
         </ConfirmationAlertContextProvider>
-      {/* </StreamVideo> */}
-    </ThemeContextProvider>
+        {/* </StreamVideo> */}
+      </ThemeContextProvider>
+    </AuthProvider>
   );
 };
