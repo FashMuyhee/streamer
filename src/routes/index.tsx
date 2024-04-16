@@ -10,7 +10,7 @@ type Props = {};
 export const RootNavigation = (props: Props) => {
   const { isAuth, initializing, user } = useAuth();
 
-  if (initializing && user) {
+  if (initializing && !user) {
     return <Loader />;
   }
 
