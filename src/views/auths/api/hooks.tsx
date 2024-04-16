@@ -33,5 +33,8 @@ export const useRegister = () => {
           break;
       }
     },
+    onSuccess: () => {
+      Toast.show({ text1: 'Registration Successful', type: 'success' });
+    },
   });
 };
