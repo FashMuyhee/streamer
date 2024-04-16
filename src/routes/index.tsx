@@ -8,9 +8,9 @@ import { Loader } from '@views';
 type Props = {};
 
 export const RootNavigation = (props: Props) => {
-  const { isAuth, initializing } = useAuth();
+  const { isAuth, initializing, user } = useAuth();
 
-  if (initializing) {
+  if (initializing && user) {
     return <Loader />;
   }
 

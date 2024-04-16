@@ -5,15 +5,23 @@ import { AuthScreenParams } from '@routes/type';
 import { AuthWrapper, GoogleButton } from '../component';
 import { TextInput as RNTextInput } from 'react-native';
 import { COLORS } from '@utils';
+import { useRegister } from '../api';
 
 type Props = {
   navigation: NavigationProp<AuthScreenParams>;
 };
 
 export const RegisterScreen = ({ navigation }: Props) => {
+  const { isLoading, post } = useRegister();
   const lastNameInput = React.useRef<RNTextInput>(null);
   const emailInput = React.useRef<RNTextInput>(null);
   const passwordInput = React.useRef<RNTextInput>(null);
+
+  const onSubmit = () => {
+    post({
+      payload: { firstName: 'test', lastName: 'test', email: 'fashmuyhee@gmail.com', password: 'f.com' },
+    });
+  };
 
   return (
     <AuthWrapper>
@@ -34,8 +42,8 @@ export const RegisterScreen = ({ navigation }: Props) => {
         onSubmitEditing={() => passwordInput.current?.focus()}
       />
       <PasswordTextInput placeholder="Password" ref={passwordInput} returnKeyType="done" onSubmitEditing={() => passwordInput.current?.focus()} />
-      <Button title="Register" />
-      <GoogleButton title="Continue with Google" />
+      <Button title="Register" onPress={onSubmit} isLoading={isLoading} />
+      <GoogleButton title="Continue with Google" onPress={() => {}} />
       <Text onPress={() => navigation.navigate('login')} textAlign="center" style={{ marginTop: 20 }}>
         Already have an account ? <Text color={COLORS['dark'].BLUE}>Login</Text>
       </Text>
