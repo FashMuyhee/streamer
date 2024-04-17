@@ -4,6 +4,8 @@ import { BORDER_RADIUS, COLORS, IS_ANDROID, SCREEN_HEIGHT, SCREEN_PADDING, SCREE
 import { useTheme } from '@hooks';
 import { Button, CancelIcon, StackView, Text, TextInput } from '@components';
 import { IconButton } from '@components/commons/IconButton';
+import { useFindStreamById } from '../api';
+import useForm from '@hooks/useForm';
 
 type Props = {
   isVisible: boolean;
@@ -13,6 +15,17 @@ type Props = {
 export const JoinStream = ({ isVisible, onClose }: Props) => {
   const { colors } = useTheme();
   const translateY = React.useRef(new Animated.Value(0)).current;
+
+  const { isLoading, findStream } = useFindStreamById();
+  const { values, handleSubmit, register, errors } = useForm<{ id: string }>({
+    defaultValues: { id: '' },
+  });
+
+  const onFindStream = (v: { id: string }) => {
+    findStream(v.id, (d) => {
+      onClose();
+    });
+  };
 
   const toggleAnimation = () => {
     Animated.spring(translateY, {
@@ -53,8 +66,15 @@ export const JoinStream = ({ isVisible, onClose }: Props) => {
             onPress={onCloseSheet}
           />
         </StackView>
-        <TextInput placeholder="Stream Id" mb={10} />
-        <Button title="Join" />
+        <TextInput
+          placeholder="Stream Id"
+          mb={10}
+          value={values?.id}
+          onChangeText={register('id').onChangeText}
+          hasError={!!errors?.id}
+          hintMessage={errors?.id as string}
+        />
+        <Button title="Join" isLoading={isLoading} onPress={() => handleSubmit(onFindStream)} />
       </Animated.View>
     </View>
   );

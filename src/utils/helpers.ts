@@ -46,3 +46,22 @@ export const isValidEmail = (email: string) => {
 export const dateFormatter = (date: string) => {
   return new Date(date).toDateString();
 };
+
+/**
+ * converts a  string to slug
+ */
+export const slugify = (str: string) => {
+  return str
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/[\s_-]+/g, '_')
+    .replace(/^-+|-+$/g, '');
+};
+
+/**
+ * create alpha-numeric uid
+ */
+export const uid = () => {
+  return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+};

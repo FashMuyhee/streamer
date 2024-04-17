@@ -4,6 +4,8 @@ import { BORDER_RADIUS, COLORS, IS_ANDROID, SCREEN_HEIGHT, SCREEN_PADDING, SCREE
 import { useTheme } from '@hooks';
 import { Button, CancelIcon, StackView, Text, TextInput } from '@components';
 import { IconButton } from '@components/commons/IconButton';
+import { CreateStreamPayload, useCreateStream } from '../api';
+import useForm from '@hooks/useForm';
 
 type Props = {
   isVisible: boolean;
@@ -13,6 +15,18 @@ type Props = {
 export const CreateStream = ({ isVisible, onClose }: Props) => {
   const { colors } = useTheme();
   const translateY = React.useRef(new Animated.Value(0)).current;
+
+  const { onSave, isCreating } = useCreateStream();
+  const { values, handleSubmit, register, errors } = useForm<CreateStreamPayload>({
+    defaultValues: { description: '', title: '' },
+  });
+
+  const onSubmit = (v: CreateStreamPayload) => {
+    onSave(v, () => {
+      // todo: stream code
+      onClose();
+    });
+  };
 
   const toggleAnimation = () => {
     Animated.spring(translateY, {
@@ -53,9 +67,25 @@ export const CreateStream = ({ isVisible, onClose }: Props) => {
             onPress={onCloseSheet}
           />
         </StackView>
-        <TextInput placeholder="Title" mb={10} />
-        <TextInput placeholder="Description" mb={10} maxLength={150} multiline />
-        <Button title="Create" />
+        <TextInput
+          placeholder="Title"
+          mb={10}
+          value={values?.title}
+          onChangeText={register('title').onChangeText}
+          hasError={!!errors?.title}
+          hintMessage={errors?.title as string}
+        />
+        <TextInput
+          placeholder="Description"
+          mb={10}
+          maxLength={150}
+          multiline
+          value={values?.description}
+          onChangeText={register('description').onChangeText}
+          hasError={!!errors?.description}
+          hintMessage={errors?.description as string}
+        />
+        <Button title="Create" isLoading={isCreating} onPress={() => handleSubmit(onSubmit)} />
       </Animated.View>
     </View>
   );
