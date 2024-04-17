@@ -4,6 +4,7 @@ import { CallScreen, HomeScreen } from '@views';
 import { BackArrow } from './components';
 import { useTheme } from '@hooks';
 import { ProfileScreen } from '@views/profile';
+import { FONTS } from '@utils';
 
 const Nav = createNativeStackNavigator<ProtectedScreenParams>();
 
@@ -20,6 +21,7 @@ export const ProtectedStack = () => {
         headerTitleAlign: 'center',
         headerTitleStyle: {
           fontSize: 16,
+          fontFamily: FONTS.BOLD,
         },
         headerStyle: {
           backgroundColor: colors.PRIMARY,
