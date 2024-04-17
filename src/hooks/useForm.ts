@@ -39,7 +39,7 @@ const useForm = <T>({ defaultValues, validationRule }: UseFormProps<T> = {}) => 
       // @ts-ignore
       const newErrors = Object.keys(values).reduce((acc, key) => {
         // @ts-ignore
-        const rule = validationRule[key];
+        const rule = !!validationRule ? validationRule[key] : 'string';
         // @ts-ignore
         const field = values[key] as string;
         let error = null;
