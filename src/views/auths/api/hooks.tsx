@@ -12,7 +12,7 @@ export const useRegister = () => {
           displayName: `${payload.firstName} ${payload.lastName}`,
           photoURL: null,
         });
-        await res.user.sendEmailVerification();
+        // await res.user.sendEmailVerification();
       };
       return register();
     },
