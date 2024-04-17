@@ -6,11 +6,11 @@ import { useAuth } from '@hooks';
 import { Loader } from '@views';
 
 export const RootNavigation = () => {
-  const { isAuth, initializing, user } = useAuth();
+  const { isAuth, initializing } = useAuth();
 
-  // if (initializing && !!user) {
-  //   return <Loader />;
-  // }
+  if (initializing) {
+    return <Loader />;
+  }
 
   return <NavigationContainer>{!isAuth ? <AuthStack /> : <ProtectedStack />}</NavigationContainer>;
 };

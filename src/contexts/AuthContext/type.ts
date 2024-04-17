@@ -6,6 +6,7 @@ export interface IAuthContext {
   isAuth: any;
   onLogout: () => void;
   initializing: boolean;
+  isLoggedIn: boolean;
 }
 
 export interface User extends Pick<FirebaseAuthTypes.User, 'email' | 'uid' | 'photoURL'> {
