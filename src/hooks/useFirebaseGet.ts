@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import fireDb from '@react-native-firebase/database'; 
+import fireDb from '@react-native-firebase/database';
 
 interface UseFirebaseDataProps<T> {
   ref: string;
@@ -20,7 +20,7 @@ export const useFirebaseGet = <T>({ ref }: UseFirebaseDataProps<T>) => {
       'value',
       (snapshot) => {
         setIsLoading(false);
-        console.log(snapshot.val());
+        setData(snapshot.val());
       },
       (e) => {
         console.log(e);
