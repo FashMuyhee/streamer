@@ -1,18 +1,25 @@
+import { useFirebaseCreate } from '@hooks';
 import { AuthError, FirebaseAuthErrorCode, LoginPayload, RegisterPayload } from './types';
 import usePostRequest from '@hooks/usePostRequest';
 import auth from '@react-native-firebase/auth';
 import Toast from 'react-native-toast-message';
 
 export const useRegister = () => {
+  const { onCreate } = useFirebaseCreate();
   return usePostRequest<any, RegisterPayload, AuthError>({
     onPost: (payload) => {
       const register = async () => {
         const res = await auth().createUserWithEmailAndPassword(payload.email, payload.password);
-        await res.user?.updateProfile({
-          displayName: `${payload.firstName} ${payload.lastName}`,
-          photoURL: null,
-        });
-        // await res.user.sendEmailVerification();
+        const { password, ...restPayload } = payload;
+        onCreate(
+          `users/${res.user.uid}`,
+          { ...restPayload, dateJoined: res.user.metadata.creationTime },
+          {
+            onSuccess: () => {
+              res.user.sendEmailVerification();
+            },
+          }
+        );
       };
       return register();
     },
@@ -54,6 +61,10 @@ export const useLogin = () => {
           break;
         case FirebaseAuthErrorCode.USER_DISABLED:
           Toast.show({ text1: 'Account disabled contact admin', type: 'error' });
+          break;
+        case FirebaseAuthErrorCode.INVALID_CREDENTIAL:
+        case FirebaseAuthErrorCode.INVALID_CREDENTIALS:
+          Toast.show({ text1: 'Invalid credentials', type: 'error' });
           break;
         case FirebaseAuthErrorCode.USER_NOT_FOUND:
           Toast.show({ text1: 'User not found', type: 'error' });
