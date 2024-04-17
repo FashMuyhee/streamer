@@ -24,9 +24,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const onAuthStateChanged = (user: FirebaseAuthTypes.User) => {
     if (user) {
+      const { email, displayName, uid, photoURL } = user || {};
       // TODO:STREAM API
       // TODO: RETRIEVE USER FROM DB
-      setUser({ ...user, firstName: '', lastName: '' });
+      console.log('fetching stream token');
+      setUser({ uid, photoURL, email, displayName, firstName: '', lastName: '' });
       setInitializing(false);
     }
   };
@@ -38,7 +40,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const value = React.useMemo(() => {
-    const isAuth = !!user && streamToken;
+    const isAuth = !!user;
     return {
       isAuth,
       onLogout,
