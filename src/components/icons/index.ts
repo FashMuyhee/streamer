@@ -12,3 +12,4 @@ export * from './stream';
 export * from './add';
 export * from './arrow-right';
 export * from './chevron-left';
+export * from './sign-out';
