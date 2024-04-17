@@ -25,7 +25,9 @@ const Wrapper = ({ size = 40, user, ...props }: UserProps) => {
       onPress={props.onPress}
     >
       {!isImageType ? (
-        <Text fontSize={size*.5} style={{ color: 'white' }}>{initializeText(user?.name as string, true)}</Text>
+        <Text fontSize={size * 0.5} isBold textTransform="capitalize" style={{ color: 'white' }}>
+          {initializeText(user?.name as string, true)}
+        </Text>
       ) : (
         <CenterView
           style={{

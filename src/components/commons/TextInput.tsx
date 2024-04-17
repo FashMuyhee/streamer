@@ -96,6 +96,7 @@ export const TextInput = React.forwardRef<RNTextInput, TextInputProps>((props, r
             secureTextEntry={secureText}
             maxLength={maxLength}
             focusable
+            autoCapitalize="none"
           />
         </View>
         {rightIcon && <View style={{ height: 30, alignItems: 'center', justifyContent: 'center', minWidth: 30, maxWidth: 50 }}>{rightIcon}</View>}
