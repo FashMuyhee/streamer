@@ -19,7 +19,7 @@ export const AuthWrapper = ({ children }: Props) => {
             height: 100,
             borderRadius: 25,
             backgroundColor: COLORS.dark.GREEN,
-            marginTop: '30%',
+            marginTop: '25%',
             marginBottom: 10,
           }}
         />
