@@ -17,13 +17,13 @@ export const Heading = (props: Props) => {
       <View>
         <Text textTransform="capitalize">Good {partDay}!</Text>
         <Text fontSize={18} isBold textTransform="capitalize">
-          {user?.displayName}
+          {`${user?.firstName} ${user?.lastName}`}
         </Text>
       </View>
       <UserAvatar
         onPress={() => navigation.navigate('profile')}
         size={40}
-        user={{ id: user?.uid as string, image: user?.photoURL as string, name: user?.displayName as string }}
+        user={{ id: user?.uid as string, image: user?.photoURL as string, name: user?.firstName as string }}
       />
     </StackView>
   );

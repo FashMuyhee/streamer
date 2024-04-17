@@ -1,14 +1,16 @@
 import React from 'react';
 import { ScreenWrapper, Text } from '@components';
-import { useAuth, useTheme } from '@hooks';
+import { useAuth, useFirebaseGet, useTheme } from '@hooks';
 import { Pressable, StyleSheet } from 'react-native';
 import { ProfileCard } from './components';
+import { User } from '@contexts';
 
 type Props = {};
 
 export const ProfileScreen = (props: Props) => {
-  const { onLogout } = useAuth();
+  const { onLogout, user } = useAuth();
   const { colors } = useTheme();
+  const { data, isLoading } = useFirebaseGet<User>({ ref: `users/${user?.uid}` });
 
   return (
     <ScreenWrapper noEdges>
