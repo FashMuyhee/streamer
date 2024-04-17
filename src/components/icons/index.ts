@@ -11,3 +11,4 @@ export * from './google-logo';
 export * from './stream';
 export * from './add';
 export * from './arrow-right';
+export * from './chevron-left';
