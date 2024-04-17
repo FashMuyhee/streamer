@@ -11,7 +11,6 @@ export interface TextProps {
   textTransform?: TextStyle['textTransform'];
   onPress?: () => void;
   truncate?: boolean;
-  truncateLength?: number;
   numberLines?: number;
 }
 
