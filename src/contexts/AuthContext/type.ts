@@ -8,7 +8,7 @@ export interface IAuthContext {
   initializing: boolean;
 }
 
-export interface User extends Pick<FirebaseAuthTypes.User, 'email' | 'uid' | 'photoURL' | 'displayName'> {
+export interface User extends Pick<FirebaseAuthTypes.User, 'email' | 'uid' | 'photoURL'> {
   firstName: string;
   lastName: string;
   dateJoined: string;

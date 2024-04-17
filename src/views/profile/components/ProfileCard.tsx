@@ -8,6 +8,8 @@ export const ProfileCard = () => {
   const { colors } = useTheme();
   const { user } = useAuth();
 
+  const displayName = `${user?.firstName} ${user?.lastName}`;
+
   return (
     <StackView
       align="center"
@@ -21,10 +23,10 @@ export const ProfileCard = () => {
         marginTop: 20,
       }}
     >
-      <UserAvatar user={{ id: String(user?.uid), image: user?.photoURL ?? '', name: String(user?.displayName) }} size={90} />
+      <UserAvatar user={{ id: String(user?.uid), image: user?.photoURL ?? '', name: displayName }} size={90} />
       <View style={{ width: '65%', rowGap: 2 }}>
         <Text style={{ width: '90%' }} fontSize={20} isBold truncate>
-          {user?.displayName}
+          {displayName}
         </Text>
         <Text fontSize={16}>{user?.email}</Text>
         <Text fontSize={14}>Joined on {dateFormatter(user?.dateJoined as string)}</Text>
