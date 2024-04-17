@@ -13,6 +13,9 @@ interface PostParams<P, T, E> {
   onError?: (e: E) => void;
 }
 
+/**
+ * Response ,Payload,Error Type
+ */
 export interface PostRequestParams<T = any, P = any, E = any> {
   onPost: (payload: P) => Promise<T>;
   onSuccess?: (res: T) => void;

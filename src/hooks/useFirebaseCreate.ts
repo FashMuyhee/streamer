@@ -21,7 +21,7 @@ export const useFirebaseCreate = <T>(): UseFirebaseCreateResponse<T> => {
 
     try {
       const dbRef = fireDb().ref(ref);
-      const newRef = await dbRef.set(payload);
+      await dbRef.set(payload);
 
       if (callbacks?.onSuccess) {
         callbacks.onSuccess();

@@ -12,34 +12,39 @@ export const useFirebaseGet = <T>({ ref }: UseFirebaseDataProps<T>) => {
   const [isError, setIsError] = useState(false);
 
   const refetch = async ({ ref: r }: UseFirebaseDataProps<T>) => {
+    setIsLoading(true);
     try {
       const db = fireDb().ref(r);
       const snapshot = await db.once('value');
       const data = snapshot.val();
       setData(data);
+      setIsLoading(false);
       return data as T;
     } catch (error) {
       setIsError(true);
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    setIsLoading(true);
     setIsError(false);
+    
+    if (ref) {
+      setIsLoading(true);
+      const db = fireDb().ref(ref);
+      const onDbChanged = db.on(
+        'value',
+        (snapshot) => {
+          setIsLoading(false);
+          setData(snapshot.val());
+        },
+        (e) => {
+          console.log(e);
+        }
+      );
 
-    const db = fireDb().ref(ref);
-    const onDbChanged = db.on(
-      'value',
-      (snapshot) => {
-        setIsLoading(false);
-        setData(snapshot.val());
-      },
-      (e) => {
-        console.log(e);
-      }
-    );
-
-    return () => db.off('value', onDbChanged);
+      return () => db.off('value', onDbChanged);
+    }
   }, [ref]);
 
   return { data, isLoading, isError, refetch };
