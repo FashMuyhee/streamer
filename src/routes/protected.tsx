@@ -31,7 +31,7 @@ export const ProtectedStack = () => {
     >
       <Nav.Screen name="home" component={HomeScreen} options={{ headerShown: false }} />
       <Nav.Screen name="call" component={CallScreen} />
-      <Nav.Screen name="profile" component={ProfileScreen} />
+      <Nav.Screen name="profile" component={ProfileScreen} options={{ title: 'Profile' }} />
     </Nav.Navigator>
   );
 };

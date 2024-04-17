@@ -5,14 +5,12 @@ import { AuthStack } from './auth';
 import { useAuth } from '@hooks';
 import { Loader } from '@views';
 
-type Props = {};
-
-export const RootNavigation = (props: Props) => {
+export const RootNavigation = () => {
   const { isAuth, initializing, user } = useAuth();
 
-  if (initializing && !user) {
-    return <Loader />;
-  }
+  // if (initializing && !!user) {
+  //   return <Loader />;
+  // }
 
   return <NavigationContainer>{!isAuth ? <AuthStack /> : <ProtectedStack />}</NavigationContainer>;
 };
