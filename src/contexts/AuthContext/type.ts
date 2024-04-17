@@ -11,4 +11,5 @@ export interface IAuthContext {
 export interface User extends Pick<FirebaseAuthTypes.User, 'email' | 'uid' | 'photoURL' | 'displayName'> {
   firstName: string;
   lastName: string;
+  dateJoined: string;
 }
