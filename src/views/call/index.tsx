@@ -2,13 +2,7 @@ import React from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ProtectedScreenParams } from '@routes/type';
 import { ScreenWrapper } from '@components';
-import {
-  SfuModels,
-  StreamCall,
-  useCallStateHooks,
-  useConnectedUser,
-} from '@stream-io/video-react-native-sdk';
-import { CALL_ID } from '@utils';
+import { SfuModels, StreamCall, useConnectedUser } from '@stream-io/video-react-native-sdk';
 import { Actions, Description, Loader, Participants } from './components';
 import { useCreateCall } from './hooks';
 import { RouteProp } from '@react-navigation/native';
@@ -22,15 +16,13 @@ type Props = {
 };
 
 export const CallScreen = ({ navigation, route }: Props) => {
-  const { host } = route.params;
+  const { host, stream } = route.params;
   const [hasPermissionRequest, setHasPermissionsRequest] = React.useState(false);
   const [isWarningVisible, setIsWarningVisible] = React.useState(false);
   const connectedUser = useConnectedUser();
 
   const { call, isLoading } = useCreateCall({
-    id: CALL_ID,
-    title: 'React Native test',
-    description: 'We are doing a test of react native audio rooms',
+    ...stream,
     host,
   });
 
@@ -92,11 +84,7 @@ export const CallScreen = ({ navigation, route }: Props) => {
         </ScrollView>
         <Actions isHost={call?.isCreatedByMe} openRequests={togglePermissionList} />
         <PermissionRequests isOpen={hasPermissionRequest} onClose={togglePermissionList} />
-        <WaitingBanner
-          onExitRoom={() => navigation.goBack()}
-          isOpen={isWarningVisible}
-          onClose={() => setIsWarningVisible(false)}
-        />
+        <WaitingBanner onExitRoom={() => navigation.goBack()} isOpen={isWarningVisible} onClose={() => setIsWarningVisible(false)} />
       </ScreenWrapper>
     </StreamCall>
   );

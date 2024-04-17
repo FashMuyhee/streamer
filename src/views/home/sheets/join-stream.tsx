@@ -6,6 +6,8 @@ import { Button, CancelIcon, StackView, Text, TextInput } from '@components';
 import { IconButton } from '@components/commons/IconButton';
 import { useFindStreamById } from '../api';
 import useForm from '@hooks/useForm';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { ProtectedScreenParams } from '@routes/type';
 
 type Props = {
   isVisible: boolean;
@@ -15,6 +17,7 @@ type Props = {
 export const JoinStream = ({ isVisible, onClose }: Props) => {
   const { colors } = useTheme();
   const translateY = React.useRef(new Animated.Value(0)).current;
+  const navigation = useNavigation<NavigationProp<ProtectedScreenParams>>();
 
   const { isLoading, findStream } = useFindStreamById();
   const { values, handleSubmit, register, errors } = useForm<{ id: string }>({
@@ -23,6 +26,7 @@ export const JoinStream = ({ isVisible, onClose }: Props) => {
 
   const onFindStream = (v: { id: string }) => {
     findStream(v.id, (d) => {
+      navigation.navigate('call', { stream: { ...d }, host: false });
       onClose();
     });
   };

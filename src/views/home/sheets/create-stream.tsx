@@ -6,6 +6,8 @@ import { Button, CancelIcon, StackView, Text, TextInput } from '@components';
 import { IconButton } from '@components/commons/IconButton';
 import { CreateStreamPayload, useCreateStream } from '../api';
 import useForm from '@hooks/useForm';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { ProtectedScreenParams } from '@routes/type';
 
 type Props = {
   isVisible: boolean;
@@ -15,6 +17,7 @@ type Props = {
 export const CreateStream = ({ isVisible, onClose }: Props) => {
   const { colors } = useTheme();
   const translateY = React.useRef(new Animated.Value(0)).current;
+  const navigation = useNavigation<NavigationProp<ProtectedScreenParams>>();
 
   const { onSave, isCreating } = useCreateStream();
   const { values, handleSubmit, register, errors } = useForm<CreateStreamPayload>({
@@ -22,8 +25,8 @@ export const CreateStream = ({ isVisible, onClose }: Props) => {
   });
 
   const onSubmit = (v: CreateStreamPayload) => {
-    onSave(v, () => {
-      // todo: stream code
+    onSave(v, (id) => {
+      navigation.navigate('call', { stream: { ...v, id }, host: true });
       onClose();
     });
   };
