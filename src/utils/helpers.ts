@@ -37,3 +37,12 @@ export const isValidEmail = (email: string) => {
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return emailRegex.test(email);
 };
+
+/**
+ * date formatter
+ * @param date
+ * @returns
+ */
+export const dateFormatter = (date: string) => {
+  return new Date(date).toDateString();
+};
