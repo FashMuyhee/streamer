@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [streamToken, setStreamToken] = React.useState('');
   const [user, setUser] = React.useState<User | null>(null);
   const [initializing, setInitializing] = React.useState(true);
-  const { isLoading, refetch } = useFirebaseGet<User>({});
+  const { refetch } = useFirebaseGet<User>({});
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
 
   const onLogout = async () => {
@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (user.uid) {
         setIsLoggedIn(true);
       }
-      const userInfo = await refetch(`users/${uid}`);
+      const userInfo = await refetch({ ref: `users/${uid}` });
       // TODO:STREAM API
       setUser({
         uid,
