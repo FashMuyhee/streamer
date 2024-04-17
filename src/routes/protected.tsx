@@ -3,6 +3,7 @@ import { ProtectedScreenParams } from './type';
 import { CallScreen, HomeScreen } from '@views';
 import { BackArrow } from './components';
 import { useTheme } from '@hooks';
+import { ProfileScreen } from '@views/profile';
 
 const Nav = createNativeStackNavigator<ProtectedScreenParams>();
 
@@ -30,6 +31,7 @@ export const ProtectedStack = () => {
     >
       <Nav.Screen name="home" component={HomeScreen} options={{ headerShown: false }} />
       <Nav.Screen name="call" component={CallScreen} />
+      <Nav.Screen name="profile" component={ProfileScreen} />
     </Nav.Navigator>
   );
 };
