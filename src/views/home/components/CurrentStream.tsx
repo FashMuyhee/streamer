@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, View } from 'react-native';
 import React from 'react';
 import { StackView, Text, UserAvatar } from '@components';
-import { BORDER_RADIUS, COLORS, SCREEN_PADDING } from '@utils';
+import { BORDER_RADIUS, COLORS, dateFormatter, SCREEN_PADDING } from '@utils';
 
 type Props = {};
 
@@ -49,7 +49,7 @@ export const CurrentStream = (props: Props) => {
             20 Members
           </Text>
           <Text fontSize={12} textAlign="center">
-            {new Date()?.toLocaleDateString()}
+            {dateFormatter(new Date()?.toString())}
           </Text>
         </StackView>
         <Text isBold>Machine Learning Deep Dive</Text>
