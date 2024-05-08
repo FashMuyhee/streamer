@@ -34,7 +34,7 @@ export const useFindStreamById = () => {
     try {
       const data = await refetch({ ref: `streams/${ref}` });
       if (data) {
-        Toast.show({ text1: 'Joining Stream', type: 'error' });
+        Toast.show({ text1: 'Joining Stream', type: 'success' });
         onSuccess(data);
       } else {
         Toast.show({ text1: 'Stream not found', type: 'error' });
