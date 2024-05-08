@@ -4,13 +4,56 @@ import { ProtectedStack } from './protected';
 import { AuthStack } from './auth';
 import { useAuth } from '@hooks';
 import { Loader } from '@views';
+import { StreamVideo, StreamVideoClient } from '@stream-io/video-react-native-sdk';
+import { API_KEY } from '@utils';
 
 export const RootNavigation = () => {
-  const { isAuth, initializing } = useAuth();
+  const { isAuth, initializing, streamToken, user } = useAuth();
+  const [client, setClient] = React.useState<StreamVideoClient | null>(null);
 
-  if (initializing) {
+  React.useEffect(() => {
+    if (initializing) return;
+    client?.disconnectUser();
+  }, [initializing, isAuth]);
+
+  React.useEffect(() => {
+    if (isAuth && streamToken && user) {
+      const streamClient = new StreamVideoClient({
+        apiKey: API_KEY,
+        user: {
+          id: user?.uid,
+          image: user?.photoURL ?? '',
+          name: `${user?.firstName} ${user?.lastName}`,
+          type: 'authenticated',
+        },
+        token: streamToken,
+      });
+      setClient(streamClient);
+    } else {
+      setClient(null);
+    }
+  }, [streamToken, user, isAuth]);
+
+  if (initializing && !streamToken) {
     return <Loader />;
   }
 
-  return <NavigationContainer>{!isAuth ? <AuthStack /> : <ProtectedStack />}</NavigationContainer>;
+  const Layout = () => {
+    if (!isAuth && client == null) {
+      return <AuthStack />;
+    }
+
+    if (client) {
+      return (
+        <StreamVideo client={client as StreamVideoClient}>
+          <ProtectedStack />
+        </StreamVideo>
+      );
+    }
+  };
+  return (
+    <NavigationContainer>
+      <Layout />
+    </NavigationContainer>
+  );
 };
