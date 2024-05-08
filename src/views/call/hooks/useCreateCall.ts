@@ -2,6 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Call, useStreamVideoClient } from '@stream-io/video-react-native-sdk';
 import React from 'react';
 import Toast from 'react-native-toast-message';
+import { useJoinCall } from './useJoinCall';
 
 type Params = {
   id: string;
@@ -14,7 +15,7 @@ export const useCreateCall = ({ description, id, title, host }: Params) => {
   const navigation = useNavigation();
   const [call, setCall] = React.useState<Call | null>(null);
   const [isLoading, setIsLoading] = React.useState(true);
-
+  const { onJoinCall } = useJoinCall(id);
   const client = useStreamVideoClient();
 
   const joinCall = async () => {
@@ -29,6 +30,9 @@ export const useCreateCall = ({ description, id, title, host }: Params) => {
       });
       setCall(call);
       setIsLoading(false);
+      if (!host) {
+        onJoinCall();
+      }
     } catch (error) {
       Toast.show({
         text1: `Error while ${host ? 'creating' : 'joining'} stream, Try again`,
