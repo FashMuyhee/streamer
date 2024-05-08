@@ -14,7 +14,7 @@ export const useCreateStream = () => {
     const id = uid();
     onCreate(
       `streams/${id}`,
-      { slug, ...payload, id, createdBy: user, createdAt: new Date().toString() },
+      { slug, ...payload, id, createdBy: user, createdAt: new Date().toString(), endedAt: null, participants: [] },
       {
         onSuccess: () => {
           Toast.show({ text1: 'Stream Created', type: 'success' });
@@ -52,10 +52,10 @@ export const useGetCurrentStream = () => {
   const { user } = useAuth();
   const id = user?.uid;
   const [isLoading, setIsLoading] = React.useState(false);
-  const [streams, setStreams] = React.useState<Stream[]>([]);
-  const [stream, setStream] = React.useState<Stream | null>(null);
+  const [stream, setStream] = React.useState<Stream | undefined>(undefined);
 
   const onLoad = async () => {
+    setIsLoading(true);
     let data: Stream[] = [];
     const db = fireDb().ref('streams');
     const snapshot = await db.once('value');
@@ -63,12 +63,14 @@ export const useGetCurrentStream = () => {
       data.push(a.val());
       return true;
     });
-    const sortStream = data.filter((d) => d.createdBy.uid == id);
+    const sortStream = data.find((d) => d?.endedAt == null && (d.createdBy.uid == id || d.participants.find((u) => u.uid == id)));
+    setStream(sortStream);
+    setIsLoading(false);
   };
 
   React.useEffect(() => {
     onLoad();
-  }, [streams]);
+  }, []);
 
   return { isLoading, stream };
 };
