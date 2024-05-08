@@ -3,34 +3,42 @@ import React from 'react';
 import { useTheme } from '@hooks';
 import { BORDER_RADIUS, COLORS, SCREEN_PADDING, SCREEN_WIDTH } from '@utils';
 import { StackView, Text } from '@components';
+import { User } from '@contexts';
 
 type Props = {
-  //   participants: User[];
-  //   startedAt: Date;
-  //   createdBy: User;
+  participants: User[];
+  createdAt: string;
+  endedAt: string;
+  createdBy: User;
   title: string;
   description: string;
+  isLive?: boolean;
 };
 
-const Card = ({ description, title }: Props) => {
+const Card = ({ description, title, isLive = true, createdAt, createdBy, endedAt, participants }: Props) => {
   const { colors } = useTheme();
   return (
     <View style={[styles.container, { backgroundColor: colors.SECONDARY }]}>
       <StackView justify="flex-start" align="center" style={{ columnGap: 5, marginBottom: 5 }}>
-        <View style={styles.liveBadge}>
-          <Text fontSize={12} color="white" textAlign="center">
-            LIVE
-          </Text>
-        </View>
+        {isLive && (
+          <View style={styles.liveBadge}>
+            <Text fontSize={12} color="white" textAlign="center">
+              LIVE
+            </Text>
+          </View>
+        )}
         <Text fontSize={12} textAlign="center">
-          20 Members
+          {participants?.length ?? 0} Members
         </Text>
         <Text fontSize={12} textAlign="center">
-          {new Date()?.toLocaleDateString()}
+          {new Date(createdAt)?.toLocaleDateString()}
         </Text>
       </StackView>
-      <Text isBold>{title}</Text>
+      <Text isBold textTransform="capitalize">
+        {title}
+      </Text>
       <Text>{description}</Text>
+      {endedAt && <Text fontSize={12}>{`Ended At${new Date(endedAt)?.toLocaleDateString()}`}</Text>}
     </View>
   );
 };
@@ -43,7 +51,7 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     paddingHorizontal: SCREEN_PADDING,
     rowGap: 4,
-    width: SCREEN_WIDTH - (SCREEN_PADDING * 2 ),
+    width: SCREEN_WIDTH - SCREEN_PADDING * 2,
     maxHeight: 180,
     marginTop: 15,
   },

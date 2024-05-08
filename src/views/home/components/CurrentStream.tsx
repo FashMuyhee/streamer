@@ -2,6 +2,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import React from 'react';
 import { StackView, Text, UserAvatar } from '@components';
 import { BORDER_RADIUS, COLORS, dateFormatter, SCREEN_PADDING } from '@utils';
+import { useGetCurrentStream } from '../api';
 
 type Props = {};
 
@@ -33,6 +34,7 @@ const Participants = () => {
 };
 
 export const CurrentStream = (props: Props) => {
+
   return (
     <View style={{ marginTop: 10 }}>
       <Text fontSize={25} isBold>

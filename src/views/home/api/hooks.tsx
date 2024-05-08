@@ -2,6 +2,8 @@ import { useAuth, useFirebaseCreate, useFirebaseGet } from '@hooks';
 import { CreateStreamPayload, Stream } from './types';
 import Toast from 'react-native-toast-message';
 import { slugify, uid } from '@utils';
+import React from 'react';
+import fireDb from '@react-native-firebase/database';
 
 export const useCreateStream = () => {
   const { isCreating, onCreate } = useFirebaseCreate();
@@ -44,4 +46,53 @@ export const useFindStreamById = () => {
     }
   };
   return { isLoading, findStream };
+};
+
+export const useGetCurrentStream = () => {
+  const { user } = useAuth();
+  const id = user?.uid;
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [streams, setStreams] = React.useState<Stream[]>([]);
+  const [stream, setStream] = React.useState<Stream | null>(null);
+
+  const onLoad = async () => {
+    let data: Stream[] = [];
+    const db = fireDb().ref('streams');
+    const snapshot = await db.once('value');
+    snapshot.forEach((a) => {
+      data.push(a.val());
+      return true;
+    });
+    const sortStream = data.filter((d) => d.createdBy.uid == id);
+  };
+
+  React.useEffect(() => {
+    onLoad();
+  }, [streams]);
+
+  return { isLoading, stream };
+};
+
+export const useGetStreams = () => {
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [allStreams, setAllStreams] = React.useState<Stream[]>([]);
+
+  const onLoad = async () => {
+    setIsLoading(true);
+    let data: Stream[] = [];
+    const db = fireDb().ref('streams');
+    const snapshot = await db.once('value');
+    // @ts-ignore
+    snapshot.forEach((a) => {
+      data.push(a.val());
+    });
+    setAllStreams(data);
+    setIsLoading(false);
+  };
+
+  React.useEffect(() => {
+    onLoad();
+  }, []);
+
+  return { isLoading, streams: allStreams };
 };

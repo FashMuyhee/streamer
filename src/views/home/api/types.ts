@@ -16,5 +16,7 @@ export interface Stream {
   title: string;
   slug: string;
   createdAt: string;
+  endedAt: string;
   createdBy: User;
+  participants: User[];
 }

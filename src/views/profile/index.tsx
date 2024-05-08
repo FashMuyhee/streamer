@@ -2,17 +2,17 @@ import React from 'react';
 import { ScreenWrapper, Text } from '@components';
 import { useAuth, useTheme } from '@hooks';
 import { StyleSheet } from 'react-native';
-import { ProfileCard } from './components';
+import { ProfileCard, RecentStreams } from './components';
 
 type Props = {};
 
 export const ProfileScreen = (props: Props) => {
   const { user } = useAuth();
-  const { colors } = useTheme();
 
   return (
     <ScreenWrapper noEdges>
       <ProfileCard />
+      <RecentStreams />
     </ScreenWrapper>
   );
 };
