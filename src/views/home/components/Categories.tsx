@@ -46,7 +46,7 @@ type Props = {};
 
 export const Categories = (props: Props) => {
   return (
-    <View style={{ marginTop: 40 }}>
+    <View>
       <Text fontSize={25} isBold>
         Categories
       </Text>
@@ -84,6 +84,6 @@ const styles = StyleSheet.create({
     borderRadius: BORDER_RADIUS,
     width: (SCREEN_WIDTH - 45) / 2,
     height: 120,
-    justifyContent:'space-between'
+    justifyContent: 'space-between',
   },
 });

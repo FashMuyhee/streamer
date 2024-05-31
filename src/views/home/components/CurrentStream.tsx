@@ -36,8 +36,10 @@ export const CurrentStream = () => {
   const { user } = useAuth();
   const isHost = stream?.createdBy.uid == user?.uid;
 
+  if (!stream) return null;
+
   return (
-    <View style={{ marginTop: 10 }}>
+    <View style={{ marginTop: 10, marginBottom: 40 }}>
       <Text fontSize={25} isBold>
         Currently Listening 🎧
       </Text>
