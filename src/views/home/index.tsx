@@ -17,7 +17,7 @@ export const HomeScreen = ({ navigation }: Props) => {
   return (
     <ScreenWrapper>
       <Heading />
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView bounces={false} nestedScrollEnabled showsVerticalScrollIndicator={false}>
         <CurrentStream />
         <Categories />
         <FeatureStreams />
