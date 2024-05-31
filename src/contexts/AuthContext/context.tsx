@@ -2,6 +2,7 @@ import React from 'react';
 import { IAuthContext, User } from './type';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { useFirebaseGet } from '@hooks';
+import useGetStreamToken from './useGetStreamToken';
 
 const initialValue: IAuthContext = {
   isAuth: false,
@@ -17,8 +18,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [streamToken, setStreamToken] = React.useState('');
   const [user, setUser] = React.useState<User | null>(null);
   const [initializing, setInitializing] = React.useState(true);
-  const { refetch } = useFirebaseGet<User>({});
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+
+  // API HOOKS
+  const { refetch } = useFirebaseGet<User>({});
+  const { post } = useGetStreamToken();
 
   const onLogout = async () => {
     await auth().signOut();
@@ -37,17 +41,26 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       } = user || {};
       if (user.uid) {
         setIsLoggedIn(true);
+        const userInfo = await refetch({ ref: `users/${uid}` });
+        post({
+          payload: { id: uid, email: String(email) },
+          onSuccess: (res) => {
+            setStreamToken(res.token);
+          },
+          onError: (err) => {
+            setInitializing(false);
+          },
+        });
+        setUser({
+          uid,
+          photoURL: userInfo?.photoURL ?? '',
+          email,
+          firstName: String(userInfo?.firstName),
+          lastName: String(userInfo?.lastName),
+          dateJoined: String(creationTime),
+        });
       }
-      const userInfo = await refetch({ ref: `users/${uid}` });
-      // TODO:STREAM API
-      setUser({
-        uid,
-        photoURL: userInfo?.photoURL ?? '',
-        email,
-        firstName: String(userInfo?.firstName),
-        lastName: String(userInfo?.lastName),
-        dateJoined: String(creationTime),
-      });
+
       setInitializing(false);
     } else {
       setInitializing(false);
@@ -61,7 +74,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const value = React.useMemo(() => {
-    const isAuth = !!user;
+    const isAuth = !!user && isLoggedIn;
     return {
       isAuth,
       onLogout,

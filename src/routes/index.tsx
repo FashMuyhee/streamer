@@ -34,23 +34,22 @@ export const RootNavigation = () => {
     }
   }, [streamToken, user, isAuth]);
 
-  if (initializing && !streamToken) {
-    return <Loader />;
-  }
-
   const Layout = () => {
-    if (!isAuth && client == null) {
-      return <AuthStack />;
-    }
-
-    if (client) {
+    if (client && isAuth) {
       return (
         <StreamVideo client={client as StreamVideoClient}>
           <ProtectedStack />
         </StreamVideo>
       );
     }
+
+    return <AuthStack />;
   };
+
+  if (initializing && !streamToken) {
+    return <Loader />;
+  }
+
   return (
     <NavigationContainer>
       <Layout />

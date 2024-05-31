@@ -1,6 +1,24 @@
 import { StreamVideoClient, StreamVideoRN } from '@stream-io/video-react-native-sdk';
-import { API_KEY, IS_ANDROID, TOKEN, USER_ID } from '@utils';
 import { AndroidImportance } from '@notifee/react-native';
+import { API_KEY, IS_ANDROID, TOKEN, USER_ID } from '@utils';
+
+StreamVideoRN.updateConfig({
+  foregroundService: {
+    android: {
+      channel: {
+        id: 'stream_call_foreground_service',
+        name: 'Service to keep call alive',
+        lights: false,
+        vibration: false,
+        importance: AndroidImportance.DEFAULT,
+      },
+      notificationTexts: {
+        title: 'Video call is in progress',
+        body: 'Tap to return to the call',
+      },
+    },
+  },
+});
 
 const TOKEN_1 = TOKEN;
 const TOKEN_2 =
@@ -23,22 +41,4 @@ export const streamClient = new StreamVideoClient({
   apiKey: API_KEY,
   user: IS_ANDROID ? user_1 : user_2,
   token: IS_ANDROID ? TOKEN_1 : TOKEN_2,
-});
-
-StreamVideoRN.updateConfig({
-  foregroundService: {
-    android: {
-      channel: {
-        id: 'stream_call_foreground_service',
-        name: 'Service to keep call alive',
-        lights: false,
-        vibration: false,
-        importance: AndroidImportance.DEFAULT,
-      },
-      notificationTexts: {
-        title: 'Video call is in progress',
-        body: 'Tap to return to the call',
-      },
-    },
-  },
 });

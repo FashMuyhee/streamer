@@ -14,3 +14,7 @@ export interface User extends Pick<FirebaseAuthTypes.User, 'email' | 'uid' | 'ph
   lastName: string;
   dateJoined: string;
 }
+
+export interface StreamAuth {
+  token: string;
+}
