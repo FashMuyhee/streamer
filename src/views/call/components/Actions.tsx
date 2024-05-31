@@ -1,19 +1,11 @@
 import { StyleSheet, View } from 'react-native';
 import React from 'react';
-import {
-  CloudIcon,
-  MuteIcon,
-  SpeakerIcon,
-  StackView,
-  StopIcon,
-  Text,
-  UnmuteIcon,
-} from '@components';
+import { CloudIcon, MuteIcon, SpeakerIcon, StackView, StopIcon, Text, UnmuteIcon } from '@components';
 import { COLORS, IS_ANDROID } from '@utils';
 import { useConfirmationAlert, useTheme } from '@hooks';
 import { OwnCapability, useCall, useCallStateHooks } from '@stream-io/video-react-native-sdk';
 import { useNavigation } from '@react-navigation/native';
-import { useToggleMic } from '../hooks';
+import { useEndStream, useToggleMic } from '../hooks';
 import Toast from 'react-native-toast-message';
 import { IconButton } from '@components/commons/IconButton';
 //@ts-ignore
@@ -44,6 +36,8 @@ export const Actions = ({ isHost, openRequests }: Props) => {
     return canUpdatePermissions && speakingRequests.length > 0;
   }, [speakingRequests, canUpdatePermissions]);
 
+  const { onEndStream } = useEndStream(call?.cid as string);
+
   // FUNCTIONS AND ACTIONS
   const toggleSpeakerPhone = () => {
     InCallManager.setSpeakerphoneOn(!isSpeaker);
@@ -73,9 +67,7 @@ export const Actions = ({ isHost, openRequests }: Props) => {
   const onToggleLive = () => {
     stopAlert.onShow({
       title: isLive ? 'Stop Stream' : 'Resume Stream',
-      message: isLive
-        ? 'Are you sure you want to stop the stream ?'
-        : 'Do you want to resume this stream ?',
+      message: isLive ? 'Are you sure you want to stop the stream ?' : 'Do you want to resume this stream ?',
       onProceed: async () => {
         isLive ? stopLive() : goLive();
       },
@@ -110,6 +102,7 @@ export const Actions = ({ isHost, openRequests }: Props) => {
       onProceed: async () => {
         try {
           await call?.endCall();
+          onEndStream();
           navigation.goBack();
           Toast.show({ text1: 'Stream Ended', type: 'info' });
         } catch (error) {
@@ -132,21 +125,8 @@ export const Actions = ({ isHost, openRequests }: Props) => {
   return (
     <View style={style.container}>
       <View style={[style.action, { backgroundColor: colors.SECONDARY }]}>
-        {isHost && (
-          <IconButton
-            size={45}
-            onPress={onToggleLive}
-            bg={COLORS['dark'].RED}
-            icon={isLive ? <StopIcon /> : <CloudIcon />}
-          />
-        )}
-        <IconButton
-          size={45}
-          onPress={toggleMic}
-          disabled={disabled}
-          bg="#0e9c60"
-          icon={isMute ? <UnmuteIcon /> : <MuteIcon />}
-        />
+        {isHost && <IconButton size={45} onPress={onToggleLive} bg={COLORS['dark'].RED} icon={isLive ? <StopIcon /> : <CloudIcon />} />}
+        <IconButton size={45} onPress={toggleMic} disabled={disabled} bg="#0e9c60" icon={isMute ? <UnmuteIcon /> : <MuteIcon />} />
         <IconButton
           size={45}
           onPress={toggleSpeakerPhone}

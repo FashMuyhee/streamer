@@ -16,3 +16,16 @@ export const useJoinCall = (streamId: string) => {
 
   return { onJoinCall };
 };
+
+export const useEndStream = (streamId: string) => {
+  const { findStream } = useFindStreamById();
+
+  const onEndStream = () => {
+    findStream(streamId, async (d) => {
+      const dbRef = fireDb().ref(`streams/${streamId}`);
+      await dbRef.update({ endedAt: new Date().toString() });
+    });
+  };
+
+  return { onEndStream };
+};
