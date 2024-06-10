@@ -38,7 +38,7 @@ export const Actions = ({ isHost, openRequests }: Props) => {
   }, [speakingRequests, canUpdatePermissions]);
 
   const { onEndStream } = useEndStream(call?.cid as string);
-  const { onChangeStream: onSaveStream } = useStreamContext();
+  const { onChangeStream } = useStreamContext();
   // FUNCTIONS AND ACTIONS
   const toggleSpeakerPhone = () => {
     InCallManager.setSpeakerphoneOn(!isSpeaker);
@@ -84,6 +84,7 @@ export const Actions = ({ isHost, openRequests }: Props) => {
       onProceed: async () => {
         try {
           await call?.leave();
+          onChangeStream(null);
           // Called when call is left
           InCallManager.stop();
           navigation.goBack();

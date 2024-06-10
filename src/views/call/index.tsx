@@ -22,7 +22,6 @@ export const CallScreen = ({ navigation, route }: Props) => {
   const connectedUser = useConnectedUser();
 
   const { stream: call } = useStreamContext();
-  console.log("🚀 ~ CallScreen ~ call:"+Platform.OS, call?.id)
 
   const togglePermissionList = () => {
     setHasPermissionsRequest(!hasPermissionRequest);

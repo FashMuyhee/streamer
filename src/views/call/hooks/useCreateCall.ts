@@ -27,7 +27,6 @@ export const useCreateCall = () => {
         },
       });
       setIsLoading(false);
-      console.log('🚀 ~ joinCall ~ call:' + Platform.OS, call.cid);
       onChangeStream(call);
       return call;
     } catch (error) {
