@@ -37,7 +37,7 @@ export const Actions = ({ isHost, openRequests }: Props) => {
     return canUpdatePermissions && speakingRequests.length > 0;
   }, [speakingRequests, canUpdatePermissions]);
 
-  const { onEndStream } = useEndStream(call?.cid as string);
+  const { onEndStream } = useEndStream(call?.id as string);
   const { onChangeStream } = useStreamContext();
   // FUNCTIONS AND ACTIONS
   const toggleSpeakerPhone = () => {
@@ -105,7 +105,6 @@ export const Actions = ({ isHost, openRequests }: Props) => {
         try {
           await call?.endCall();
           await onEndStream();
-          navigation.goBack();
           Toast.show({ text1: 'Stream Ended', type: 'info' });
         } catch (error) {
           Toast.show({ text1: 'Something went wrong try again', type: 'error' });

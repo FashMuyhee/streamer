@@ -7,7 +7,7 @@ import { Actions, Description, Loader, Participants } from './components';
 import { RouteProp } from '@react-navigation/native';
 import { PermissionRequests, WaitingBanner } from './sheets';
 import Toast from 'react-native-toast-message';
-import { Platform, ScrollView } from 'react-native';
+import { ScrollView } from 'react-native';
 import { useStreamContext } from '@contexts';
 
 type Props = {
