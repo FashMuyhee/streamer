@@ -14,7 +14,7 @@ type Params = {
 export const useCreateCall = () => {
   const [isLoading, setIsLoading] = React.useState(false);
   const client = useStreamVideoClient();
-  const { onSaveStream } = useStreamContext();
+  const { onChangeStream } = useStreamContext();
 
   const joinCall = async ({ description, id, title, host }: Params) => {
     setIsLoading(true);
@@ -28,7 +28,7 @@ export const useCreateCall = () => {
       });
       setIsLoading(false);
       console.log('🚀 ~ joinCall ~ call:' + Platform.OS, call.cid);
-      onSaveStream(call);
+      onChangeStream(call);
       return call;
     } catch (error) {
       setIsLoading(false);

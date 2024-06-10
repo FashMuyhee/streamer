@@ -3,6 +3,7 @@ import { IAuthContext, User } from './type';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import useGetStreamToken from './useGetStreamToken';
 import fireDb from '@react-native-firebase/firestore';
+import { FIRESTORE_COLLECTIONS } from '@utils';
 
 const initialValue: IAuthContext = {
   isAuth: false,
@@ -16,9 +17,9 @@ export const AuthContext = React.createContext<IAuthContext>(initialValue);
 
 const onGetUserInfo = async (uid: string) => {
   try {
-    const user = await fireDb().collection('users').doc(uid).get();
+    const user = await fireDb().collection(FIRESTORE_COLLECTIONS.USERS).doc(uid).get();
     if (user) {
-      return user as unknown as User;
+      return user.data() as unknown as User;
     }
     throw null;
   } catch (error) {
