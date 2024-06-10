@@ -4,7 +4,7 @@ import { BORDER_RADIUS, COLORS, IS_ANDROID, SCREEN_HEIGHT, SCREEN_PADDING, SCREE
 import { useTheme } from '@hooks';
 import { Button, CancelIcon, StackView, Text, TextInput } from '@components';
 import { IconButton } from '@components/commons/IconButton';
-import { CreateStreamPayload, useCreateStream } from '../api';
+import { CreateStreamPayload, useCreateStream } from '../firebase';
 import useForm from '@hooks/useForm';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { ProtectedScreenParams } from '@routes/type';

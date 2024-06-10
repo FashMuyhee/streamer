@@ -7,7 +7,7 @@ import { IconButton } from '@components/commons/IconButton';
 import useForm from '@hooks/useForm';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { ProtectedScreenParams } from '@routes/type';
-import { useJoinStream } from '@views/call/hooks';
+import { useJoinStream } from '../firebase';
 
 type Props = {
   isVisible: boolean;

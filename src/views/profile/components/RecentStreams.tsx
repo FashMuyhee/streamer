@@ -3,7 +3,7 @@ import React from 'react';
 import { Text } from '@components';
 import { StreamCard } from '@views/home/components';
 import { useGetRecentStreams } from '../hooks';
-import { Stream } from '@views/home/api';
+import { Stream } from '@views/home/firebase';
 
 export const RecentStreams = () => {
   const { isLoading, recentStream } = useGetRecentStreams();

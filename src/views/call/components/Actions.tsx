@@ -11,6 +11,7 @@ import { IconButton } from '@components/commons/IconButton';
 //@ts-ignore
 import InCallManager from 'react-native-incall-manager';
 import { useSpeakRequest } from '../hooks/useSpeakRequests';
+import { useStreamContext } from '@contexts';
 
 type Props = {
   isHost: boolean;
@@ -37,7 +38,7 @@ export const Actions = ({ isHost, openRequests }: Props) => {
   }, [speakingRequests, canUpdatePermissions]);
 
   const { onEndStream } = useEndStream(call?.cid as string);
-
+  const { onChangeStream: onSaveStream } = useStreamContext();
   // FUNCTIONS AND ACTIONS
   const toggleSpeakerPhone = () => {
     InCallManager.setSpeakerphoneOn(!isSpeaker);
@@ -102,7 +103,7 @@ export const Actions = ({ isHost, openRequests }: Props) => {
       onProceed: async () => {
         try {
           await call?.endCall();
-          onEndStream();
+          await onEndStream();
           navigation.goBack();
           Toast.show({ text1: 'Stream Ended', type: 'info' });
         } catch (error) {

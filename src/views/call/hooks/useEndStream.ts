@@ -1,5 +1,5 @@
 import fireDb from '@react-native-firebase/firestore';
-import { onFindStreamById } from '@views/home/api';
+import { onFindStreamById } from '@views/home/firebase';
 
 export const useEndStream = (streamId: string) => {
   const onEndStream = async () => {

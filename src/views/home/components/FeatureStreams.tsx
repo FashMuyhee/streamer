@@ -2,7 +2,7 @@ import { ScrollView, View } from 'react-native';
 import React from 'react';
 import { Text } from '@components';
 import { StreamCard } from './StreamCard';
-import { useGetStreams } from '../api';
+import { useGetStreams } from '../firebase';
 
 export const FeatureStreams = () => {
   const { streams } = useGetStreams();

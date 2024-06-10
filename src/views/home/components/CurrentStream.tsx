@@ -2,7 +2,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import React from 'react';
 import { StackView, Text, UserAvatar } from '@components';
 import { BORDER_RADIUS, COLORS, dateFormatter, SCREEN_PADDING } from '@utils';
-import { useGetCurrentStream } from '../api';
+import { useGetCurrentStream } from '../firebase';
 import { useAuth, useTheme } from '@hooks';
 import { User } from '@contexts';
 
