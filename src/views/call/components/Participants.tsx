@@ -12,9 +12,9 @@ type Props = {};
 
 type ParticipantProps = {
   participant: StreamVideoParticipant;
-  isHost: boolean;
+  participantIsHost: boolean;
   onOpenAction: (p: StreamVideoParticipant) => void;
-  canModerate: boolean;
+  iCanModerate: boolean;
 };
 
 export const Participants = (props: Props) => {
@@ -23,9 +23,9 @@ export const Participants = (props: Props) => {
   const participants = useParticipants({ sortBy: speaking });
   const hostUser = useCallCreatedBy();
   const loggedUser = useConnectedUser();
-  const canModerate = loggedUser?.id == hostUser?.id;
+  const iCanModerate = loggedUser?.id == hostUser?.id;
 
-  const isHost = (id: string) => hostUser?.id === id;
+  const participantIsHost = (id: string) => hostUser?.id === id;
   const [participant, setParticipant] = React.useState<StreamVideoParticipant | null>(null);
 
   const onOpenAction = (p: StreamVideoParticipant) => {
@@ -43,9 +43,9 @@ export const Participants = (props: Props) => {
             <Participant
               key={index}
               participant={participant}
-              isHost={isHost(participant.userId)}
+              participantIsHost={participantIsHost(participant.userId)}
               onOpenAction={onOpenAction}
-              canModerate={canModerate}
+              iCanModerate={iCanModerate}
             />
           ))}
         </StackView>
@@ -54,17 +54,22 @@ export const Participants = (props: Props) => {
     </>
   );
 };
-const Participant = ({ participant, isHost, onOpenAction, canModerate }: ParticipantProps) => {
+const Participant = ({ participant, participantIsHost, onOpenAction, iCanModerate }: ParticipantProps) => {
   const { colors } = useTheme();
   const canSpeak = isSpeaker(participant);
-  
+
+  const disabled = React.useMemo(() => {
+    if (!iCanModerate) return true;
+    if (participantIsHost && iCanModerate) return true;
+    return false;
+  }, [iCanModerate, participantIsHost]);
   return (
-    <Pressable style={styles.participant} onPress={() => onOpenAction(participant)} disabled={isHost}>
+    <Pressable style={styles.participant} onPress={() => onOpenAction(participant)} disabled={disabled}>
       <UserAvatar
         user={{ id: participant.userId, image: participant.image, name: participant.name }}
         size={60}
         onPress={() => {
-          if (!isHost && canModerate) {
+          if (!disabled) {
             onOpenAction(participant);
           }
         }}
@@ -76,7 +81,7 @@ const Participant = ({ participant, isHost, onOpenAction, canModerate }: Partici
       )}
       <StackView align="center" style={{ columnGap: 3, marginTop: 5 }}>
         <Text fontSize={13} textAlign="center">
-          {participant.name} {isHost ? '(Host)' : ''}
+          {participant.name} {participantIsHost ? '(Host)' : ''}
         </Text>
         {participant.isSpeaking && <View style={styles.speakingBadge} />}
       </StackView>
