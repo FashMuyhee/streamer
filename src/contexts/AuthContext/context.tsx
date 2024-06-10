@@ -4,6 +4,11 @@ import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import useGetStreamToken from './useGetStreamToken';
 import fireDb from '@react-native-firebase/firestore';
 import { FIRESTORE_COLLECTIONS } from '@utils';
+import { useAsyncStorage } from '@react-native-async-storage/async-storage';
+import { jwtDecode } from 'jwt-decode';
+//@ts-ignore
+import { decode } from 'base-64';
+global.atob = decode;
 
 const initialValue: IAuthContext = {
   isAuth: false,
@@ -33,6 +38,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = React.useState<User | null>(null);
   const [initializing, setInitializing] = React.useState(true);
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const { getItem, setItem } = useAsyncStorage('@GET_STREAM_TOKEN');
 
   // API HOOKS
   const { post } = useGetStreamToken();
@@ -42,6 +48,20 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setStreamToken('');
     setUser(null);
     setInitializing(false);
+  };
+
+  const tokenIsValid = async () => {
+    const token = await getItem();
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        const currentTime = Math.floor(Date.now() / 1000);
+        return Number(decoded.exp) > currentTime;
+      } catch (error) {
+        return false;
+      }
+    }
+    return false;
   };
 
   const onAuthStateChanged = async (user: FirebaseAuthTypes.User) => {
@@ -55,15 +75,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (user.uid) {
         setIsLoggedIn(true);
         const userInfo = await onGetUserInfo(uid);
-        post({
-          payload: { id: uid, email: String(email) },
-          onSuccess: (res) => {
-            setStreamToken(res.token);
-          },
-          onError: (err) => {
-            setInitializing(false);
-          },
-        });
+        const isTokenValid = await tokenIsValid();
+        if (!isTokenValid) {
+          post({
+            payload: { id: uid, email: String(email) },
+            onSuccess: (res) => {
+              setStreamToken(res.token);
+              setItem(res.token);
+            },
+            onError: (err) => {
+              setInitializing(false);
+            },
+          });
+        } else {
+          const token = await getItem();
+          setStreamToken(token as string);
+        }
         setUser({
           uid,
           photoURL: userInfo?.photoURL ?? '',
@@ -72,6 +99,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           lastName: String(userInfo?.lastName),
           dateJoined: String(creationTime),
         });
+        setInitializing(false);
       }
 
       setInitializing(false);
