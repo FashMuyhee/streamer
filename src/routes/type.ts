@@ -4,7 +4,7 @@ import { Stream } from '@views/home/firebase';
 export type ProtectedScreenParams = {
   home: undefined;
   room: undefined;
-  call: { host?: boolean; stream?: Pick<Stream, 'description' | 'title' | 'id'>; mode: 'new' | 'load' };
+  call: { host?: boolean };
   profile: undefined;
 };
 
