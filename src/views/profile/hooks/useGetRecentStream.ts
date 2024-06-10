@@ -1,7 +1,6 @@
 import React from 'react';
 import { useAuth } from '@hooks';
-import { Stream } from '@views/home/api';
-import fireDb from '@react-native-firebase/database';
+import { Stream, useGetStreams } from '@views/home/firebase';
 
 export const useGetRecentStreams = () => {
   const { user } = useAuth();
@@ -9,18 +8,15 @@ export const useGetRecentStreams = () => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [allStreams, setAllStreams] = React.useState<Stream[]>([]);
 
+  const { streams } = useGetStreams();
+
   const onLoad = async () => {
     setIsLoading(true);
-    let data: Stream[] = [];
-    const db = fireDb().ref('streams');
-    const snapshot = await db.once('value');
-    // @ts-ignore
-    snapshot.forEach((a) => {
-      data.push(a.val());
-    });
-    const sortStream = data.filter((d) => d.createdBy.uid == id || d.participants.filter((p) => p.uid == id));
-    setAllStreams(sortStream);
-    setIsLoading(false);
+    if (streams) {
+      const sortStream = streams.filter((d) => d.createdBy.uid == id || d.participants.filter((p) => p.uid == id));
+      setAllStreams(sortStream);
+      setIsLoading(false);
+    }
   };
 
   React.useEffect(() => {

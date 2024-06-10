@@ -5,6 +5,8 @@ import { BORDER_RADIUS, COLORS, dateFormatter, SCREEN_PADDING } from '@utils';
 import { useGetCurrentStream } from '../firebase';
 import { useAuth, useTheme } from '@hooks';
 import { User } from '@contexts';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { ProtectedScreenParams } from '@routes/type';
 
 const Participants = ({ participants }: { participants: User[] }) => {
   const memberCount = participants?.length ?? 0;
@@ -35,8 +37,11 @@ export const CurrentStream = () => {
   const { colors } = useTheme();
   const { user } = useAuth();
   const isHost = stream?.createdBy.uid == user?.uid;
+  const { navigate } = useNavigation<NavigationProp<ProtectedScreenParams>>();
 
-  const goToStream = () => {};
+  const goToStream = () => {
+    navigate('call', { host: isHost });
+  };
 
   if (!stream) return null;
 
