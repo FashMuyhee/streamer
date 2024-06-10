@@ -92,7 +92,12 @@ export const SHADOW_STYLE = IS_ANDROID
     };
 
 export const API_KEY = 'nxw8gsrkqfmj';
-export const TOKEN_API = 'https://streamer-token-api.onrender.com/generate-stream-token'
+export const TOKEN_API = 'https://streamer-token-api.onrender.com/generate-stream-token';
+
+export const FIRESTORE_COLLECTIONS = {
+  STREAMS: 'streams',
+  USERS: 'users',
+};
 
 // DEMO INFO
 // export const API_KEY = 'mmhfdzb5evj2';
