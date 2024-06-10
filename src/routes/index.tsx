@@ -43,6 +43,10 @@ export const RootNavigation = () => {
       );
     }
 
+    if (isAuth && !client) {
+      return <Loader />;
+    }
+
     return <AuthStack />;
   };
 
