@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import fireDb from '@react-native-firebase/database';
+import fireDb, { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 
 interface UseFirebaseCreateResponse<T> {
   isCreating: boolean;
@@ -11,7 +11,7 @@ type Callbacks = {
   onError?: (error: any) => void;
 };
 
-export const useFirebaseCreate = <T>(): UseFirebaseCreateResponse<T> => {
+export const useFirebaseCreate = <T extends FirebaseFirestoreTypes.DocumentData>(): UseFirebaseCreateResponse<T> => {
   const [isCreating, setIsCreating] = useState(false);
   const [isError, setIsError] = useState(false);
 
@@ -20,8 +20,8 @@ export const useFirebaseCreate = <T>(): UseFirebaseCreateResponse<T> => {
     setIsError(false);
 
     try {
-      const dbRef = fireDb().ref(ref);
-      await dbRef.set(payload);
+      const dbRef = fireDb().collection(ref);
+      await dbRef.add(payload);
 
       if (callbacks?.onSuccess) {
         callbacks.onSuccess();
