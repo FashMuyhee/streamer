@@ -12,7 +12,8 @@ export const useRegister = () => {
         const res = await auth().createUserWithEmailAndPassword(payload.email, payload.password);
         const { password, ...restPayload } = payload;
         onCreate(
-          `users/${res.user.uid}`,
+          'users',
+          res.user.uid,
           { ...restPayload, dateJoined: res.user.metadata.creationTime },
           {
             onSuccess: () => {

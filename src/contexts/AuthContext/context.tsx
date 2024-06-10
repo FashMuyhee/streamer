@@ -1,8 +1,8 @@
 import React from 'react';
 import { IAuthContext, User } from './type';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
-import { useFirebaseGet } from '@hooks';
 import useGetStreamToken from './useGetStreamToken';
+import fireDb from '@react-native-firebase/firestore';
 
 const initialValue: IAuthContext = {
   isAuth: false,
@@ -14,6 +14,20 @@ const initialValue: IAuthContext = {
 };
 export const AuthContext = React.createContext<IAuthContext>(initialValue);
 
+const onGetUserInfo = async (uid: string) => {
+  try {
+    const user = await fireDb().collection('users').doc(uid).get();
+    if (user) {
+      return user as unknown as User;
+    }
+    throw null;
+  } catch (error) {
+    throw null;
+  }
+};
+
+export default onGetUserInfo;
+
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [streamToken, setStreamToken] = React.useState('');
   const [user, setUser] = React.useState<User | null>(null);
@@ -21,7 +35,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
 
   // API HOOKS
-  const { refetch } = useFirebaseGet<User>({});
   const { post } = useGetStreamToken();
 
   const onLogout = async () => {
@@ -41,7 +54,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       } = user || {};
       if (user.uid) {
         setIsLoggedIn(true);
-        const userInfo = await refetch({ ref: `users/${uid}` });
+        const userInfo = await onGetUserInfo(uid);
         post({
           payload: { id: uid, email: String(email) },
           onSuccess: (res) => {
