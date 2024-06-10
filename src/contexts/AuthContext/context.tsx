@@ -21,7 +21,6 @@ const onGetUserInfo = async (uid: string) => {
     if (user) {
       return user.data() as unknown as User;
     }
-    throw null;
   } catch (error) {
     throw null;
   }
