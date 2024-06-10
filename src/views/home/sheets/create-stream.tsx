@@ -1,4 +1,4 @@
-import { View, StyleSheet, Animated } from 'react-native';
+import { View, StyleSheet, Animated, ScrollView } from 'react-native';
 import React from 'react';
 import { BORDER_RADIUS, COLORS, IS_ANDROID, SCREEN_HEIGHT, SCREEN_PADDING, SCREEN_WIDTH } from '@utils';
 import { useTheme } from '@hooks';
@@ -26,7 +26,7 @@ export const CreateStream = ({ isVisible, onClose }: Props) => {
 
   const onSubmit = (v: CreateStreamPayload) => {
     onSave(v, (id) => {
-      navigation.navigate('call', { stream: { ...v, id }, host: true });
+      navigation.navigate('call', { stream: { ...v, id }, host: true, mode: 'new' });
       onClose();
     });
   };
@@ -57,40 +57,38 @@ export const CreateStream = ({ isVisible, onClose }: Props) => {
   if (!isVisible) return null;
 
   return (
-    <View style={styles.sheet}>
-      <Animated.View style={[styles.wrapper, animatedStyle, { backgroundColor: colors.SECONDARY }]}>
-        <StackView style={{ marginTop: 15, marginBottom: 30 }} align="center" justify="space-between">
-          <Text isBold fontSize={20}>
-            Create new stream
-          </Text>
-          <IconButton
-            size={30}
-            style={{ backgroundColor: colors.PRIMARY }}
-            icon={<CancelIcon color={colors.TEXT} iconSize={15} />}
-            onPress={onCloseSheet}
-          />
-        </StackView>
-        <TextInput
-          placeholder="Title"
-          mb={10}
-          value={values?.title}
-          onChangeText={register('title').onChangeText}
-          hasError={!!errors?.title}
-          hintMessage={errors?.title as string}
+    <Animated.View style={[styles.wrapper, animatedStyle, { backgroundColor: colors.SECONDARY }]}>
+      <StackView style={{ marginTop: 15, marginBottom: 30 }} align="center" justify="space-between">
+        <Text isBold fontSize={20}>
+          Create new stream
+        </Text>
+        <IconButton
+          size={30}
+          style={{ backgroundColor: colors.PRIMARY }}
+          icon={<CancelIcon color={colors.TEXT} iconSize={15} />}
+          onPress={onCloseSheet}
         />
-        <TextInput
-          placeholder="Description"
-          mb={10}
-          maxLength={150}
-          multiline
-          value={values?.description}
-          onChangeText={register('description').onChangeText}
-          hasError={!!errors?.description}
-          hintMessage={errors?.description as string}
-        />
-        <Button title="Create" isLoading={isCreating} onPress={() => handleSubmit(onSubmit)} />
-      </Animated.View>
-    </View>
+      </StackView>
+      <TextInput
+        placeholder="Title"
+        mb={10}
+        value={values?.title}
+        onChangeText={register('title').onChangeText}
+        hasError={!!errors?.title}
+        hintMessage={errors?.title as string}
+      />
+      <TextInput
+        placeholder="Description"
+        mb={10}
+        maxLength={150}
+        multiline
+        value={values?.description}
+        onChangeText={register('description').onChangeText}
+        hasError={!!errors?.description}
+        hintMessage={errors?.description as string}
+      />
+      <Button title="Create" isLoading={isCreating} onPress={() => handleSubmit(onSubmit)} />
+    </Animated.View>
   );
 };
 

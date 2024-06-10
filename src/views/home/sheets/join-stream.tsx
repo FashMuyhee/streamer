@@ -26,7 +26,7 @@ export const JoinStream = ({ isVisible, onClose }: Props) => {
 
   const onFindStream = (v: { id: string }) => {
     findStream(v.id, (d) => {
-      navigation.navigate('call', { stream: { ...d }, host: false });
+      navigation.navigate('call', { stream: { ...d }, host: false, mode: 'new' });
       onClose();
     });
   };
@@ -57,30 +57,28 @@ export const JoinStream = ({ isVisible, onClose }: Props) => {
   if (!isVisible) return null;
 
   return (
-    <View style={styles.sheet}>
-      <Animated.View style={[styles.wrapper, animatedStyle, { backgroundColor: colors.SECONDARY }]}>
-        <StackView style={{ marginTop: 15, marginBottom: 30 }} align="center" justify="space-between">
-          <Text isBold fontSize={20}>
-            Join a stream
-          </Text>
-          <IconButton
-            size={30}
-            style={{ backgroundColor: colors.PRIMARY }}
-            icon={<CancelIcon color={colors.TEXT} iconSize={15} />}
-            onPress={onCloseSheet}
-          />
-        </StackView>
-        <TextInput
-          placeholder="Stream Id"
-          mb={10}
-          value={values?.id}
-          onChangeText={register('id').onChangeText}
-          hasError={!!errors?.id}
-          hintMessage={errors?.id as string}
+    <Animated.View style={[styles.wrapper, animatedStyle, { backgroundColor: colors.SECONDARY }]}>
+      <StackView style={{ marginTop: 15, marginBottom: 30 }} align="center" justify="space-between">
+        <Text isBold fontSize={20}>
+          Join a stream
+        </Text>
+        <IconButton
+          size={30}
+          style={{ backgroundColor: colors.PRIMARY }}
+          icon={<CancelIcon color={colors.TEXT} iconSize={15} />}
+          onPress={onCloseSheet}
         />
-        <Button title="Join" isLoading={isLoading} onPress={() => handleSubmit(onFindStream)} />
-      </Animated.View>
-    </View>
+      </StackView>
+      <TextInput
+        placeholder="Stream Id"
+        mb={10}
+        value={values?.id}
+        onChangeText={register('id').onChangeText}
+        hasError={!!errors?.id}
+        hintMessage={errors?.id as string}
+      />
+      <Button title="Join" isLoading={isLoading} onPress={() => handleSubmit(onFindStream)} />
+    </Animated.View>
   );
 };
 
