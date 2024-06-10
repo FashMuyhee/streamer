@@ -36,6 +36,8 @@ export const CurrentStream = () => {
   const { user } = useAuth();
   const isHost = stream?.createdBy.uid == user?.uid;
 
+  const goToStream = () => {};
+
   if (!stream) return null;
 
   return (
@@ -71,7 +73,7 @@ export const CurrentStream = () => {
           <Text>{stream?.description}</Text>
           <StackView align="center" justify="space-between" style={{ marginTop: 10 }}>
             <Participants participants={stream?.participants as User[]} />
-            <Pressable style={styles.joinBtn}>
+            <Pressable onPress={goToStream} style={styles.joinBtn}>
               <Text textTransform="uppercase" fontSize={13} color="white">
                 View Stream
               </Text>

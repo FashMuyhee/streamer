@@ -1,20 +1,30 @@
 import fireDb from '@react-native-firebase/database';
 import { useAuth } from '@hooks';
 import { useFindStreamById } from '@views/home/api';
+import { useCreateCall } from './useCreateCall';
 
-export const useJoinCall = (streamId: string) => {
+export const useJoinStream = () => {
   const { user } = useAuth();
-  const { findStream } = useFindStreamById();
+  const { isLoading: fetchingStream, findStream } = useFindStreamById();
+  const { isLoading, onCreateJoin } = useCreateCall();
 
-  const onJoinCall = () => {
+  const onJoinStream = (streamId: string, onSuccess: () => void) => {
     findStream(streamId, async (d) => {
       const participants = d?.participants ?? [];
       const dbRef = fireDb().ref(`streams/${streamId}`);
-      await dbRef.update({ participants: [...participants, user] });
+      onCreateJoin({ id: streamId, host: false })
+        .then(async (call) => {
+          console.log('🚀 ~ useJoinCall ~ call:', call.id);
+          await dbRef.update({ participants: [...participants, user] });
+          onSuccess();
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     });
   };
 
-  return { onJoinCall };
+  return { isLoading: isLoading || fetchingStream, onJoinStream };
 };
 
 export const useEndStream = (streamId: string) => {

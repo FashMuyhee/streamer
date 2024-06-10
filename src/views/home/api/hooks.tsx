@@ -4,29 +4,34 @@ import Toast from 'react-native-toast-message';
 import { slugify, uid } from '@utils';
 import React from 'react';
 import fireDb from '@react-native-firebase/database';
+import { useCreateCall } from '@views/call/hooks';
 
 export const useCreateStream = () => {
   const { isCreating, onCreate } = useFirebaseCreate();
+  const { isLoading, onCreateJoin } = useCreateCall();
   const { user } = useAuth();
 
   const onSave = (payload: CreateStreamPayload, onSuccess: (id: string) => void) => {
     const slug = slugify(payload.title);
     const id = uid();
-    onCreate(
-      `streams/${id}`,
-      { slug, ...payload, id, createdBy: user, createdAt: new Date().toString(), endedAt: null, participants: [] },
-      {
-        onSuccess: () => {
-          Toast.show({ text1: 'Stream Created', type: 'success' });
-          onSuccess(id);
-        },
-        onError: () => {
-          Toast.show({ text1: 'Error Creating Stream', type: 'error' });
-        },
-      }
-    );
+    
+    onCreateJoin({ ...payload, id, host: true }).then(() => {
+      onCreate(
+        `streams/${id}`,
+        { slug, ...payload, id, createdBy: user, createdAt: new Date().toString(), endedAt: null, participants: [] },
+        {
+          onSuccess: () => {
+            Toast.show({ text1: 'Stream Created', type: 'success' });
+            onSuccess(id);
+          },
+          onError: () => {
+            Toast.show({ text1: 'Error Creating Stream', type: 'error' });
+          },
+        }
+      );
+    });
   };
-  return { isCreating, onSave };
+  return { isCreating: isCreating || isLoading, onSave };
 };
 
 export const useFindStreamById = () => {
@@ -72,7 +77,7 @@ export const useGetCurrentStream = () => {
     onLoad();
   }, []);
 
-  return { isLoading, stream };
+  return { isLoading, stream, onLoad };
 };
 
 export const useGetStreams = () => {
@@ -96,5 +101,5 @@ export const useGetStreams = () => {
     onLoad();
   }, []);
 
-  return { isLoading, streams: allStreams };
+  return { isLoading, streams: allStreams, onLoad };
 };

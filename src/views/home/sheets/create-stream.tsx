@@ -1,4 +1,4 @@
-import { View, StyleSheet, Animated, ScrollView } from 'react-native';
+import { StyleSheet, Animated } from 'react-native';
 import React from 'react';
 import { BORDER_RADIUS, COLORS, IS_ANDROID, SCREEN_HEIGHT, SCREEN_PADDING, SCREEN_WIDTH } from '@utils';
 import { useTheme } from '@hooks';
@@ -21,7 +21,7 @@ export const CreateStream = ({ isVisible, onClose }: Props) => {
 
   const { onSave, isCreating } = useCreateStream();
   const { values, handleSubmit, register, errors } = useForm<CreateStreamPayload>({
-    defaultValues: { description: '', title: '' },
+    defaultValues: { description: 'Hello ', title: 'Be' },
   });
 
   const onSubmit = (v: CreateStreamPayload) => {

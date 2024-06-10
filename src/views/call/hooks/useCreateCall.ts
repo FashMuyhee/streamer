@@ -1,24 +1,22 @@
-import { useNavigation } from '@react-navigation/native';
-import { Call, useStreamVideoClient } from '@stream-io/video-react-native-sdk';
+import { useStreamContext } from '@contexts';
+import { useStreamVideoClient } from '@stream-io/video-react-native-sdk';
 import React from 'react';
+import { Platform } from 'react-native';
 import Toast from 'react-native-toast-message';
-import { useJoinCall } from './useJoinCall';
 
 type Params = {
   id: string;
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
   host: boolean;
 };
 
-export const useCreateCall = ({ description, id, title, host }: Params) => {
-  const navigation = useNavigation();
-  const [call, setCall] = React.useState<Call | null>(null);
-  const [isLoading, setIsLoading] = React.useState(true);
-  const { onJoinCall } = useJoinCall(id);
+export const useCreateCall = () => {
+  const [isLoading, setIsLoading] = React.useState(false);
   const client = useStreamVideoClient();
+  const { onSaveStream } = useStreamContext();
 
-  const joinCall = async () => {
+  const joinCall = async ({ description, id, title, host }: Params) => {
     setIsLoading(true);
     const call = client!.call('audio_room', id);
     try {
@@ -28,25 +26,19 @@ export const useCreateCall = ({ description, id, title, host }: Params) => {
           custom: { title, description },
         },
       });
-      setCall(call);
       setIsLoading(false);
-      if (!host) {
-        onJoinCall();
-      }
+      console.log('🚀 ~ joinCall ~ call:' + Platform.OS, call.cid);
+      onSaveStream(call);
+      return call;
     } catch (error) {
+      setIsLoading(false);
       Toast.show({
         text1: `Error while ${host ? 'creating' : 'joining'} stream, Try again`,
         type: 'error',
       });
-      setIsLoading(false);
-      navigation.goBack();
+      throw null;
     }
   };
 
-  React.useEffect(() => {
-    if (call || !client) return;
-    joinCall();
-  }, []);
-
-  return { call, isLoading };
+  return { isLoading, onCreateJoin: joinCall };
 };

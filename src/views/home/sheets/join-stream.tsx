@@ -1,13 +1,13 @@
-import { View, StyleSheet, Animated } from 'react-native';
+import { StyleSheet, Animated } from 'react-native';
 import React from 'react';
 import { BORDER_RADIUS, COLORS, IS_ANDROID, SCREEN_HEIGHT, SCREEN_PADDING, SCREEN_WIDTH } from '@utils';
 import { useTheme } from '@hooks';
 import { Button, CancelIcon, StackView, Text, TextInput } from '@components';
 import { IconButton } from '@components/commons/IconButton';
-import { useFindStreamById } from '../api';
 import useForm from '@hooks/useForm';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { ProtectedScreenParams } from '@routes/type';
+import { useJoinStream } from '@views/call/hooks';
 
 type Props = {
   isVisible: boolean;
@@ -19,14 +19,14 @@ export const JoinStream = ({ isVisible, onClose }: Props) => {
   const translateY = React.useRef(new Animated.Value(0)).current;
   const navigation = useNavigation<NavigationProp<ProtectedScreenParams>>();
 
-  const { isLoading, findStream } = useFindStreamById();
+  const { isLoading, onJoinStream } = useJoinStream();
   const { values, handleSubmit, register, errors } = useForm<{ id: string }>({
     defaultValues: { id: '' },
   });
 
   const onFindStream = (v: { id: string }) => {
-    findStream(v.id, (d) => {
-      navigation.navigate('call', { stream: { ...d }, host: false, mode: 'new' });
+    onJoinStream(v.id, () => {
+      navigation.navigate('call', { mode: 'new' });
       onClose();
     });
   };

@@ -4,11 +4,11 @@ import { ProtectedScreenParams } from '@routes/type';
 import { ScreenWrapper } from '@components';
 import { SfuModels, StreamCall, useConnectedUser } from '@stream-io/video-react-native-sdk';
 import { Actions, Description, Loader, Participants } from './components';
-import { useCreateCall } from './hooks';
 import { RouteProp } from '@react-navigation/native';
 import { PermissionRequests, WaitingBanner } from './sheets';
 import Toast from 'react-native-toast-message';
-import { ScrollView } from 'react-native';
+import { Platform, ScrollView } from 'react-native';
+import { useStreamContext } from '@contexts';
 
 type Props = {
   navigation: NativeStackNavigationProp<ProtectedScreenParams>;
@@ -16,15 +16,13 @@ type Props = {
 };
 
 export const CallScreen = ({ navigation, route }: Props) => {
-  const { host, stream } = route.params;
+  const { host } = route.params;
   const [hasPermissionRequest, setHasPermissionsRequest] = React.useState(false);
   const [isWarningVisible, setIsWarningVisible] = React.useState(false);
   const connectedUser = useConnectedUser();
 
-  const { call, isLoading } = useCreateCall({
-    ...stream,
-    host,
-  });
+  const { stream: call } = useStreamContext();
+  console.log("🚀 ~ CallScreen ~ call:"+Platform.OS, call?.id)
 
   const togglePermissionList = () => {
     setHasPermissionsRequest(!hasPermissionRequest);
@@ -66,7 +64,7 @@ export const CallScreen = ({ navigation, route }: Props) => {
     });
   }, [call]);
 
-  if (isLoading || !call) {
+  if (!call) {
     return <Loader loadingText={host ? 'Creating Live Stream' : 'Joining Stream'} />;
   }
 
